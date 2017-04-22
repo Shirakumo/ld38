@@ -3,8 +3,10 @@
   :serial T
   :components ((:file "package")
                (:file "sprite")
+               (:file "text")
                (:file "world")
                (:file "character")
                (:file "player")
                (:file "main"))
-  :depends-on (:trial))
+  :depends-on (:trial
+               :cl-fond))
