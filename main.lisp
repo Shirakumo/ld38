@@ -30,11 +30,8 @@
   (defmethod setup-pipeline ((ld38 ld38))
     (let ((pipeline (pipeline ld38))
           (pass1 (make-instance 'per-object-pass))
-          ;; (pass2 (make-instance 'fxaa-pass))
-          )
-      (register pass1 pipeline)
-      ;; (connect-pass pass1 pass2 "previousPass" pipeline)
-      ))
+          (pass2 (make-instance 'fxaa-pass)))
+      (connect-pass pass1 pass2 "previousPass" pipeline)))
   (maybe-reload-scene))
 
 (defun ld38 ()
