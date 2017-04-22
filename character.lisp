@@ -2,7 +2,9 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defclass world-character ()
-    ()))
+    ()
+    (:default-initargs
+     :location (vec 0 0 2))))
 
 
 (define-shader-subject pincers (world-entity world-character sprite)
@@ -13,7 +15,7 @@
    :angle 45))
 
 (define-asset (sprites pincers) texture-asset
-    (#P"whatever.png"))
+    (#P"mystery.png"))
 
 
 (define-shader-subject attorney (world-entity world-character sprite)
@@ -24,4 +26,4 @@
    :angle 135))
 
 (define-asset (sprites attorney) texture-asset
-    (#P"whatever.png"))
+    (#P"mystery.png"))
