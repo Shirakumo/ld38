@@ -1,0 +1,2 @@
+(in-package #:ld38)
+
