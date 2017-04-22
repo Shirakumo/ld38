@@ -6,6 +6,9 @@
     :resolution (list 1024 768)
     :clear-color (vec 0 0 0)))
 
+(define-asset (fonts default) font-asset
+    (#p"forced-square.ttf"))
+
 (defmethod paint :before ((pipeline pipeline) (ld38 ld38))
   (let ((w (width ld38)) (h (height ld38)))
     (reset-matrix)
