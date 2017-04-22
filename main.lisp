@@ -3,18 +3,19 @@
 (define-widget ld38 (QGLWidget main fullscreenable)
   ()
   (:default-initargs
-    :resolution (list 800 600)
-    :clear-color (vec 0.5 0.6 0.9)))
+    :resolution (list 1024 768)
+    :clear-color (vec 0 0 0)))
 
 (defmethod paint :before ((pipeline pipeline) (ld38 ld38))
-  (reset-matrix)
-  (gl:viewport 0 0 800 600)
-  (reset-matrix (view-matrix))
-  (scale-by 1/800 1/600 1 (view-matrix))
-  (let ((player (unit :player (scene ld38))))
-    (when player
-      (rotate +vz+ (/ (* PI (- (angle player) 90)) -180) (view-matrix))
-      (translate (v- (location player)) (view-matrix)))))
+  (let ((w (width ld38)) (h (height ld38)))
+    (reset-matrix)
+    (gl:viewport 0 0 w h)
+    (reset-matrix (view-matrix))
+    (scale-by (/ 2 w) (/ 2 h) 1 (view-matrix))
+    (let ((player (unit :player (scene ld38))))
+      (when player
+        (rotate +vz+ (/ (* PI (- (angle player) 90)) -180) (view-matrix))
+        (translate (v- (location player)) (view-matrix))))))
 
 (progn
   (defmethod setup-scene ((ld38 ld38))
