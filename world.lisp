@@ -9,7 +9,7 @@
     (#p"world.png"))
 
 (defclass world-entity (located-entity)
-  ((angle :initform 90 :accessor angle)))
+  ((angle :initarg :angle :initform 90 :accessor angle)))
 
 (defmethod initialize-instance :after ((entity world-entity) &key)
   (setf (angle entity) (angle entity)))
