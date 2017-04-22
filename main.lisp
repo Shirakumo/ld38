@@ -21,6 +21,7 @@
   (defmethod setup-scene ((ld38 ld38))
     (let ((scene (scene ld38)))
       (enter (make-instance 'player) scene)
+      (enter (make-instance 'pincers) scene)
       (enter (make-instance 'world) scene)))
   (maybe-reload-scene))
 

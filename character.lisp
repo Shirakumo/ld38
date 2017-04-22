@@ -1,9 +1,11 @@
 (in-package #:ld38)
 
-(defclass world-character (world-entity sprite)
-  ((velocity :initform 0 :accessor velocity)))
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defclass world-character ()
+    ()))
 
-(defclass pincers (world-character) ()
+(define-shader-subject pincers (world-entity world-character sprite)
+  ()
   (:default-initargs
    :texture (asset 'sprites 'pincers)
    :name :pincers
