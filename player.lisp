@@ -7,7 +7,7 @@
    :name :player))
 
 (define-asset (sprites player) texture-asset
-    (#p"whatever.png"))
+    (#p"player.png"))
 
 (define-action movement ())
 

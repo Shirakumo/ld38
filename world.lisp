@@ -16,9 +16,9 @@
 
 (defmethod (setf angle) :after (value (entity world-entity))
   (let ((phi (/ (* PI value) 180))
-        (r 2048))
+        (r 2013))
     (setf (vx (location entity)) (* r (cos phi))
           (vy (location entity)) (* r (sin phi)))))
 
 (defmethod paint :before ((entity world-entity) target)
-  (rotate +vz+ (/ (* PI (angle entity)) 180)))
+  (rotate +vz+ (/ (* PI (- (angle entity) 90)) 180)))
