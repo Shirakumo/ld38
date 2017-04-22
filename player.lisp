@@ -1,10 +1,12 @@
 (in-package #:ld38)
 
 (define-shader-subject player (world-entity sprite)
-  ((velocity :initform 0 :accessor velocity))
+  ((velocity :initform 0 :accessor velocity)
+   (direction :initform :left :accessor direction))
   (:default-initargs
    :texture (asset 'sprites 'player)
-   :name :player))
+   :name :player
+   :location (vec 0 0 1)))
 
 (define-asset (sprites player) texture-asset
     (#p"player.png"))
@@ -55,8 +57,24 @@
 (define-handler (player tick) (ev)
   (let ((vel (if (retained 'movement :run)
                  0.6 0.2)))
-    (cond ((retained 'movement :left)  (incf (angle player) vel))
-          ((retained 'movement :right) (decf (angle player) vel)))))
+    (cond ((retained 'movement :left)
+           (setf (velocity player) vel)
+           (setf (direction player) :left))
+          ((retained 'movement :right)
+           (setf (velocity player) (- vel))
+           (setf (direction player) :right))
+          (T (setf (velocity player) 0)))
+    (incf (angle player) (velocity player))))
+
+(defmethod paint ((player player) target)
+  (with-pushed-matrix
+    (case (direction player)
+      (:left (rotate +vy+ PI)))
+    (call-next-method))
+  (for:for ((entity over (scene *context*)))
+    (when (and (typep entity 'world-character)
+               (<= (abs (- (angle entity) (angle player))) 1))
+      )))
 
 (define-handler (player perform) (ev)
   )
