@@ -4,14 +4,16 @@
   ()
   (:default-initargs
     :resolution (list 800 600)
-    :clear-color (vec 0.0 0.0 0.0)))
+    :clear-color (vec 0.5 0.6 0.9)))
 
 (defmethod paint :before ((pipeline pipeline) (ld38 ld38))
+  (reset-matrix)
   (gl:viewport 0 0 800 600)
   (reset-matrix (view-matrix))
   (scale-by 1/800 1/600 1 (view-matrix))
   (let ((player (unit :player (scene ld38))))
     (when player
+      (rotate +vz+ (/ (* PI (- (angle player) 90)) -180) (view-matrix))
       (translate (v- (location player)) (view-matrix)))))
 
 (progn
