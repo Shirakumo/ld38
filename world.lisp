@@ -14,6 +14,11 @@
 (defmethod initialize-instance :after ((entity world-entity) &key)
   (setf (angle entity) (angle entity)))
 
+(defmethod (setf angle) :around (value (entity world-entity))
+  (if (<= 0 value 360)
+      (call-next-method)
+      (setf (angle entity) (mod value 360))))
+
 (defmethod (setf angle) :after (value (entity world-entity))
   (let ((phi (/ (* PI value) 180))
         (r 2013))
