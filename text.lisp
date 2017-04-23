@@ -5,7 +5,7 @@
 abcdefghijklmnopqrstuvwxyz~
 ABCDEFGHIJKLMNOPQRSTUVWXYZ~
 0123456789 
-.,;:!?_-/()[]\"'`~~"))
+.,;:!?_-/()[]\"'`~~~%"))
 
 (define-pool fonts
   :base 'ld38)
