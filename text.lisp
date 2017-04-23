@@ -20,7 +20,10 @@ ABCDEFGHIJKLNOPQRSTUVWXYZ~
 (defmethod load progn ((asset font-asset))
   (let ((inputs (coerced-inputs asset)))
     (setf (resource asset) (cl-fond:make-font (first inputs) (or (second inputs) *charset*)
-                                              :size (size asset)))))
+                                              :size (size asset) :oversample 2))))
+
+(defmethod finalize-resource ((asset (eql 'font-asset)) font)
+  (cl-fond:free font))
 
 (define-shader-subject text ()
   ((font :initarg :font :accessor font)
@@ -32,7 +35,7 @@ ABCDEFGHIJKLNOPQRSTUVWXYZ~
 
 (defmethod load progn ((text text))
   (load (font text))
-  (setf (vertex-array text) (cl-fond:compute-text (font text) (text text))))
+  (setf (vertex-array text) (cl-fond:compute-text (resource (font text)) (text text))))
 
 (defmethod (setf text) :after (string (text text))
   (when (resource text)
@@ -51,8 +54,8 @@ ABCDEFGHIJKLNOPQRSTUVWXYZ~
     (setf (uniform shader "projection_matrix") (projection-matrix)))
   (let ((vao (vertex-array text)))
     (when vao
-      (gl:bind-texture :texture-2d (cl-fond:atlas (font text)))
-      (gl:bind-vertex-array (resource vao))
+      (gl:bind-texture :texture-2d (cl-fond:atlas (resource (font text))))
+      (gl:bind-vertex-array vao)
       (%gl:draw-elements :triangles (* 6 (length (text text))) :unsigned-int 0)
       (gl:bind-vertex-array 0))))
 
