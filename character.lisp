@@ -46,30 +46,41 @@
   ()
   (:default-initargs
    :texture (asset 'sprites 'businessman)
+   :profile (asset 'sprites 'businessman-profile)
+   :dialogue (dialogue 'businessman-hello)
    :name :businessman
    :angle 135))
 
 (define-asset (sprites businessman) texture-asset
     (#P"mystery.png"))
 
+(define-asset (sprites businessman-profile) texture-asset
+    (#p"mystery.png"))
 
-(define-shader-subject janitor (world-entity world-character sprite)
+(define-shader-subject farmer (world-entity world-character sprite)
   ()
   (:default-initargs
-   :texture (asset 'sprites 'janitor)
-   :name :janitor
+   :texture (asset 'sprites 'farmer)
+   :profile (asset 'sprites 'farmer-profile)
+   :name :farmer
    :angle 225))
 
-(define-asset (sprites janitor) texture-asset
+(define-asset (sprites farmer) texture-asset
     (#P"mystery.png"))
 
+(define-asset (sprites farmer-profile) texture-asset
+    (#p"mystery.png"))
 
-(define-shader-subject cheery (world-entity world-character sprite)
+(define-shader-subject niece (world-entity world-character sprite)
   ()
   (:default-initargs
-   :texture (asset 'sprites 'cheery)
-   :name :cheery
+   :texture (asset 'sprites 'niece)
+   :profile (asset 'sprites 'niece-profile)
+   :name :niece
    :angle 30))
 
-(define-asset (sprites cheery) texture-asset
+(define-asset (sprites niece) texture-asset
     (#P"mystery.png"))
+
+(define-asset (sprites niece-profile) texture-asset
+    (#p"mystery.png"))
