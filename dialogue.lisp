@@ -74,8 +74,11 @@
              (diag-advance dialogue))
             (change
              (case (second current)
-               (dialogue (setf (dialogue (partner dialogue))
-                               (dialogue (third current)))))
+               (dialogue
+                (setf (dialogue (partner dialogue))
+                      (dialogue (third current))))
+               (chapter
+                (story-change-chapter))) ;; This changes the partner's dialogue
              (diag-advance dialogue))
             (jump
              (setf (first (diag-stack dialogue))
