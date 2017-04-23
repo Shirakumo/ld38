@@ -78,6 +78,13 @@
                (goal (story-inc-goal (third current)))
                (branch (story-weight-branch (third current) (fourth current))))
              (diag-advance dialogue))
+            (check
+             (case (second current)
+               (ending (unless (story-check-ending (third current)) (story-bad-ending)))))
+            (accuse
+             (setf (first (diag-stack dialogue))
+                   (dialogue (if (story-attempt-ending (second current))
+                                 (third current) (fourth current)))))
             (change
              (case (second current)
                (dialogue (setf (dialogue (partner dialogue))

@@ -9,6 +9,7 @@
                (:file "character")
                (:file "dialogs")
                (:file "ghost")
+               (:file "businessman")
                (:file "player")
                (:file "story")
                (:file "chicken")

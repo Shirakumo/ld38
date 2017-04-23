@@ -42,14 +42,14 @@
 (define-asset (sprites pincers-profile) texture-asset
     (#p"pincers-profile.png"))
 
-(define-shader-subject attorney (world-entity world-character sprite)
+(define-shader-subject businessman (world-entity world-character sprite)
   ()
   (:default-initargs
-   :texture (asset 'sprites 'attorney)
-   :name :attorney
+   :texture (asset 'sprites 'businessman)
+   :name :businessman
    :angle 135))
 
-(define-asset (sprites attorney) texture-asset
+(define-asset (sprites businessman) texture-asset
     (#P"mystery.png"))
 
 

@@ -19,7 +19,15 @@
    ("You don't know how you died?"
     (say "Well, no. But I would not be haunting here if I had passed peacefully now would I?"))
    ("A murder mystery? I'm in!"
-    (say "That's the spirit, lass.")))
+    (say "That's the spirit, lass."))
+   ("What? No."
+    (say "Please...?")
+    (choice
+     ("Fine."
+      (say "Thank you."))
+     ("I said no."
+      (check ending bad)
+      (end dialogue)))))
   (say "Now, this world we inhabit is quite small. You can easily traverse it within moments.")
   (say "There are a few persons of interest here. If you could go see what you can find out from them.")
   (say "And thank you most kindly for doing this.")

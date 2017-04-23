@@ -95,12 +95,12 @@
 
 (defun story-next-chapter ()
   (loop for branch in (branches (story-current-chapter))
-        for weight = (or (cadr branch) 0)
+        for weight = (or (second branch) 0)
         with next-branch = NIL
         maximizing weight into max-weight
-        when (or (null next-branch) (< (or (cadr next-branch) 0) weight))
+        when (or (null next-branch) (< (or (second next-branch) 0) weight))
         do (setf next-branch branch)
-        finally (return (car next-branch))))
+        finally (return (first next-branch))))
 
 (defun story-set-chapter (chapter)
   (loop for actor-name in (alexandria:hash-table-keys (dialogues chapter))
@@ -112,6 +112,24 @@
 (defun story-change-chapter ()
   (let ((chapter (story-next-chapter)))
     (story-set-chapter chapter)))
+
+(defun story-attempt-ending (ending)
+  (let ((ending-p (ending-p (story-current-chapter) ending)))
+    (if ending-p (story-set-chapter (story-ending ending)) (story-bad-ending))
+    ending-p))
+
+(defun story-check-ending (ending)
+  (ending-p (story-current-chapter) ending))
+
+(defun story-set-ending (ending)
+  (story-set-chapter (ecase ending
+                       (businessman 'businessman-ending)
+                       (farmer 'farmer-ending)
+                       (niece 'niece-ending)
+                       (crab 'crab-ending)
+                       (all 'all-ending)
+                       (suicide 'suicide-ending)
+                       (bad 'bad-ending))))
 
 (defun story-bad-ending ()
   (story-set-chapter 'bad-ending))
