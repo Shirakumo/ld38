@@ -135,5 +135,5 @@
                       (paint text target)
                       (translate-by 0 -40 0)))
             (say
-             (setf (text text) (second diag))
+             (setf (text text) (format NIL (second diag)))
              (paint text target))))))))
