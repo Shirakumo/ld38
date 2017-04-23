@@ -51,7 +51,9 @@
 
 (define-handler (dialogue advance-dialogue advance-dialogue 10) (ev)
   (when (partner dialogue)
-    (setf (dialogue dialogue) (dialogue-next (dialogue dialogue)))
+    (setf (dialogue dialogue) (if (getf (dialogue dialogue) :choice)
+                                  (dialogue-next (dialogue dialogue) (choice dialogue))
+                                  (dialogue-next (dialogue dialogue))))
     (unless (dialogue dialogue)
       (issue *loop* 'end-dialogue))))
 
