@@ -73,12 +73,15 @@
              (return))
             (mood ;; FIXME: Update mood
              (diag-advance dialogue))
+            (affect
+             (case (second current)
+               (goal (story-inc-goal (third current)))
+               (branch (story-weight-branch (third current) (fourth current))))
+             (diag-advance dialogue))
             (change
              (case (second current)
                (dialogue (setf (dialogue (partner dialogue))
                                (dialogue (third current))))
-               (goal (story-inc-goal (third current)))
-               (branch (story-weight-branch (third current) (fourth current)))
                (chapter (story-change-chapter))) ;; This changes the partner's dialogue
              (diag-advance dialogue))
             (jump

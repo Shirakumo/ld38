@@ -1,11 +1,13 @@
 (in-package #:ld38)
 
 (define-dialogue businessman-hello
+  (affect goal)
   (say "Greetings there, young miss.")
   (say "We have been having great progress here!")
   (say "Say, would you happen to have a moment?")
   (choice
    ("Certainly, sir."
+    (say "Marvellous choice, miss!")
     (jump businessman-excited))
    ("I'd rather not.."
     (say "Perhaps later then. I shall be here!"))
@@ -15,7 +17,6 @@
 
 (define-dialogue businessman-excited
   (mood excited)
-  (say "Marvellous choice, miss!")
   (say "My organisation believes in deconstructed management mobility.")
   (say "Today just happens to mark the 20th anniversary celebrations of our millennial monitored contingencies.")
   (say "A you may know, we need a more contemporary reimagining of our global transitional processing.")
@@ -27,7 +28,8 @@
     (say "That is fine, time is money as they say.")
     (say "I do not recall coming to it last week but I shall expect you to visit us at the symposium this spring."))
    ("I'm sorry but I need to go."
-    (say "That is too bad, miss. I hope to see you again."))))
+    (say "That is too bad, miss. I hope to see you again."))
+   (affect branch 1)))
 
 (define-dialogue businessman-disappointed
   (say "You again?")
