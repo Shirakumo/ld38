@@ -12,6 +12,21 @@
 (defmethod load progn ((character world-character))
   (load (profile character)))
 
+(define-shader-subject ghost (world-entity world-character sprite)
+  ()
+  (:default-initargs
+   :texture (asset 'sprites 'ghost)
+   :profile (asset 'sprites 'ghost-profile)
+   :dialogue (dialogue 'ghost-hello)
+   :name :ghost
+   :angle 93))
+
+(define-asset (sprites ghost) texture-asset
+    (#P"mystery.png"))
+
+(define-asset (sprites ghost-profile) texture-asset
+    (#P"mystery.png"))
+
 (define-shader-subject pincers (world-entity world-character sprite)
   ()
   (:default-initargs

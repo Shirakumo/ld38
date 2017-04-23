@@ -26,6 +26,7 @@
 (progn
   (defmethod setup-scene ((ld38 ld38))
     (let ((scene (scene ld38)))
+      (enter (make-instance 'ghost) scene)
       (enter (make-instance 'cheery) scene)
       (enter (make-instance 'janitor) scene)
       (enter (make-instance 'attorney) scene)

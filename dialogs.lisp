@@ -14,6 +14,30 @@
 (defmacro define-dialogue (name &body def)
   `(setf (dialogue ',name) ',def))
 
+(define-dialogue ghost-hello
+  (say "...")
+  (say "... ...")
+  (say "Who is it I sense near this poor creature?")
+  (choice
+   ("Hello? I was just passing by."
+    (say "Hello yourself."))
+   ("Ack! A ghost!"
+    (say "No need to shout. I can hear you just fine as it is."))
+   ("Spoopy."
+    (say "I suppose it is, isn't it?")))
+  (say "Could this sad case of spirits bother you with a small request?")
+  (say "I would really like to know who killed me.")
+  (choice
+   ("Yes, of course. But what could I do?"
+    (say "There is quite plenty."))
+   ("You don't know how you died?"
+    (say "Well, no. But I would not be haunting here if I had passed peacefully now would I?"))
+   ("A murder mystery? I'm in!"
+    (say "That's the spirit, lass.")))
+  (say "Now, this world we inhabit is quite small. You can easily traverse it within moments.")
+  (say "There are a few persons of interest here. If you could go see what you can find out from them.")
+  (say "And thank you most kindly for doing this."))
+
 (define-dialogue pincers-hello
   (say "How's it going?")
   (choice
