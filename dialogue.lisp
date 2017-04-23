@@ -29,7 +29,7 @@
 
 (define-shader-subject dialogue (sprite)
   ((partner :initform NIL :accessor partner)
-   (text :initform (make-instance 'text :text "TEST" :font (asset 'fonts 'dialogue)) :accessor text))
+   (text :initform (make-instance 'text :text "AAAAAAA" :font (asset 'fonts 'dialogue)) :accessor text))
   (:default-initargs
    :texture (asset 'sprites 'textbox)))
 
@@ -58,15 +58,18 @@
 (define-handler (dialogue end-dialogue) (ev)
   (setf (partner dialogue) NIL))
 
-(defmethod paint ((dialogue dialogue) target)
+(defmethod paint :around ((dialogue dialogue) target)
   (when (partner dialogue)
     (with-pushed-matrix
-      ;; Translate to HUD coordinates
       (reset-matrix)
-      (translate-by 0 0 -3)
-      (call-next-method)
-      ;; Align
-      (translate-by (/ 1024 -2) (/ 768 2) 0)
-      ;; Draw stuff
-      (translate-by 50 -510 0)
-      (paint (text dialogue) target))))
+      (translate-by 0 0 -1)
+      (with-pushed-matrix
+        (translate-by 300 50 0)
+        (setf (texture dialogue) (profile (partner dialogue)))
+        (call-next-method))
+      (with-pushed-matrix
+        (setf (texture dialogue) (asset 'sprites 'textbox))
+        (call-next-method))
+      (with-pushed-matrix
+        (translate-by -460 -130 0)
+        (paint (text dialogue) target)))))
