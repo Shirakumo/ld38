@@ -19,7 +19,7 @@
    :angle 45))
 
 (define-asset (sprites pincers) texture-asset
-    (#P"mystery.png"))
+    (#P"pincers.png"))
 
 (define-asset (sprites pincers-profile) texture-asset
     (#p"pincers-profile.png"))
