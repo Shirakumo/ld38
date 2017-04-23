@@ -26,11 +26,9 @@
 (progn
   (defmethod setup-scene ((ld38 ld38))
     (let ((scene (scene ld38)))
-      (enter (make-instance 'ghost) scene)
-      (enter (make-instance 'cheery) scene)
-      (enter (make-instance 'janitor) scene)
-      (enter (make-instance 'attorney) scene)
-      (enter (make-instance 'pincers) scene)
+      ;; Must be first
+      (for:for ((npc in '(ghost pincers businessman farmer niece)))
+        (enter (make-instance npc) scene))
       (enter (make-instance 'player) scene)
       (dotimes (i 5)
         (enter (make-instance 'chicken :angle (+ 300 (random 10))
