@@ -42,22 +42,22 @@
    (chapter-3ab 0)
    (chapter-3ac 0)))
 
-(define-chapter chapter-3a ()
+(define-chapter chapter-3a (1)
   (businessman)
   ((:ghost ghost-good-ending))
   ())
 
-(define-chapter chapter-3ab ()
+(define-chapter chapter-3ab (1)
   (farmer)
   ((:ghost ghost-good-ending))
   ())
 
-(define-chapter chapter-3ac ()
+(define-chapter chapter-3ac (1)
   (niece)
   ((:ghost ghost-good-ending))
   ())
 
-(define-chapter chapter-2b ()
+(define-chapter chapter-2b (1)
   (businessman farmer niece crab)
   ((:ghost ghost-start-2)
    (:pincers pincers-clicks))
@@ -65,17 +65,17 @@
    (chapter-3b 0)
    (chapter-3bc 0)))
 
-(define-chapter chapter-3ba ()
+(define-chapter chapter-3ba (1)
   (businessman)
   ((:ghost ghost-good-ending))
   ())
 
-(define-chapter chapter-3b ()
+(define-chapter chapter-3b (1)
   (farmer)
   ((:ghost ghost-good-ending))
   ())
 
-(define-chapter chapter-3bc ()
+(define-chapter chapter-3bc (1)
   (niece)
   ((:ghost ghost-good-ending))
   ())
@@ -85,7 +85,8 @@
   ((:ghost ghost-start-2))
   (chapter-3))
 
-(define-chapter bad-ending ()
+(define-chapter bad-ending (1)
+  ()
   ((:ghost ghost-bad-ending))
   ())
 
@@ -106,11 +107,11 @@
         for actor = (unit actor-name (scene *context*))
         do (setf (dialogue actor) (gethash actor-name (dialogues chapter))))
   (setf (getf *story* :chapter) (make-instance chapter)
-        (getf *story* :progress) 0)))
+        (getf *story* :progress) 0))
 
 (defun story-change-chapter ()
   (let ((chapter (story-next-chapter)))
-    (story-set-chapter chapter))
+    (story-set-chapter chapter)))
 
 (defun story-bad-ending ()
   (story-set-chapter 'bad-ending))

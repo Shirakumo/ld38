@@ -24,7 +24,7 @@
    ("It's a crab."
     (say "The crab ignores you."))))
 
-(define-dialogue pincer-clicks
+(define-dialogue pincers-clicks
   (say "The crab clickety clacks its pincers at your general direction."))
 
 (define-dialogue attorney-hello
