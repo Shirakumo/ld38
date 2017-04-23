@@ -66,10 +66,10 @@
    :angle 225))
 
 (define-asset (sprites farmer) texture-asset
-    (#P"mystery.png"))
+    (#P"farmer.png"))
 
 (define-asset (sprites farmer-profile) texture-asset
-    (#p"mystery.png"))
+    (#p"farmer-profile.png"))
 
 (define-shader-subject niece (world-entity world-character sprite)
   ()
