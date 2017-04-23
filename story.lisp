@@ -142,7 +142,7 @@
   (incf (cadr (nth branch-number (branches (story-current-chapter)))) (or delta 1)))
 
 (defun story-inc-goal (delta)
-  (incf (getf *story :progress) (or delta 1))
+  (incf (getf *story* :progress) (or delta 1))
   (let ((chapter (story-current-chapter)))
     (when (<= (goal chapter) (getf *story* :progress))
       (meet-goal chapter))))
