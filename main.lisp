@@ -43,7 +43,7 @@
 (progn
   (defmethod setup-pipeline ((ld38 ld38))
     (let ((pipeline (pipeline ld38))
-          (pass1 (make-instance 'per-object-pass))          )
+          (pass1 (make-instance 'per-object-pass)))
       (register pass1 pipeline)))
   (maybe-reload-scene))
 
