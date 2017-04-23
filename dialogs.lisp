@@ -1,93 +1,107 @@
 (in-package #:ld38)
 
+(defvar *dialogues* (make-hash-table :test 'eql))
+
+(defmethod dialogue ((name symbol))
+  (gethash name *dialogues*))
+
+(defmethod (setf dialogue) (value (name symbol))
+  (setf (gethash name *dialogues*) value))
+
+(defun remove-dialogue (name)
+  (remhash name *dialogues*))
+
+(defmacro define-dialogue (name &body def)
+  `(setf (dialogue ',name) ',def))
+
 (define-dialogue pincers-hello
-  :tag start
-  pincers "How's it going?"
-  :choice (("It is what it is."
-            :dialogue pincers-disappointed)
-           ("Life is hard and everything is terrible.")
-           ("Eh, I don't know."
-            pincers "Well try to figure out."
-            :go start))
-  pincers "Word.")
+  (say "How's it going?")
+  (choice
+   ("It is what it is."
+    (change dialogue pincers-disappointed)
+    (say "Word."))
+   ("Life is hard and everything is terrible."
+    (change dialogue pincers-unhappy)
+    (say "I was just trying to be nice."))
+   ("Eh, I don't know."
+    (say "Well try to figure out."))))
 
 (define-dialogue pincers-disappointed
-  :action (pincers depressed)
-  pincers "I was just trying to be nice."
-  pincers "Anyway, go away."
-  :end all)
+  (mood depressed)
+  (say "Anyway, go away."))
 
 (define-dialogue pincers-happy
-  :action (pincers greeting)
-  pincers "Hello again, I hope you've enjoyed the planet.")
+  (mood happy)
+  (say "Hello again, I hope you've enjoyed the planet."))
 
 (define-dialogue pincers-unhappy
-  :action (pincers depressed)
-  pincer "...")
+  (mood depressed)
+  (say "..."))
 
 (define-dialogue attorney-hello
-  :tag start
-  attorney "Greetings there, young miss. Would you have a moment?"
-  :choice (("Certainly, sir."
-            :dialogue attorney-excited)
-           ("I'd rather not.."
-            attorney "Perhaps later then. I shall be here!")
-           ("No. Not now. Not ever."
-            attorney "That is very disappointing, miss. But I shall not bother you any longer.")))
+  (say "Greetings there, young miss. Would you have a moment?")
+  (choice
+   ("Certainly, sir."
+    (jump attorney-excited))
+   ("I'd rather not.."
+    (say "Perhaps later then. I shall be here!"))
+   ("No. Not now. Not ever."
+    (say "That is very disappointing, miss. But I shall not bother you any longer."))))
 
 (define-dialogue attorney-excited
-  :action (attorney excited)
-  attorney "Marvellous choice, miss!"
-  attorney "My organisation believes in deconstructed management mobility."
-  attorney "Today just happens to mark the 20th anniversary celebrations of our millennial monitored contingencies."
-  attorney "A you may know, we need a more contemporary reimagining of our global transitional processing."
-  attorney "Our bleeding edge exploratory research points to optional monitored matrix approaches."
-  attorney "It's time that we became uber-efficient with our three-dimensional organisational time-phases!"
-  attorney "Would you like to hear more?"
-  :choice (("I'd rather not right now."
-            attorney "That is fine, time is money as they say."
-            attorney "I do not recall coming to it last week but I shall expect you to visit us at the symposium this spring.")
-           ("I'm sorry but I need to go."
-            attorney "That is too bad, miss. I hope to see you again."))
-  :end all)
+  (mood excited)
+  (say "Marvellous choice, miss!")
+  (say "My organisation believes in deconstructed management mobility.")
+  (say "Today just happens to mark the 20th anniversary celebrations of our millennial monitored contingencies.")
+  (say "A you may know, we need a more contemporary reimagining of our global transitional processing.")
+  (say "Our bleeding edge exploratory research points to optional monitored matrix approaches.")
+  (say "It's time that we became uber-efficient with our three-dimensional organisational time-phases!")
+  (say "Would you like to hear more?")
+  (choice
+   ("I'd rather not right now."
+    (say "That is fine, time is money as they say.")
+    (say "I do not recall coming to it last week but I shall expect you to visit us at the symposium this spring."))
+   ("I'm sorry but I need to go."
+    (say "That is too bad, miss. I hope to see you again."))))
 
 (define-dialogue janitor-hello
-  :tag start
-  janitor "Hey there, kid. Wha brings ya here?"
-  :choice (("Just exploring."
-            janitor "Hmph.. Well stay away from the ice fields."
-            janitor "Tha blasted 'torney is yapping his gums at any poor sod thar.")
-           ("Nothing."
-            janitor "Noffin? Figures ya kids have too much time these days.")
-           ("Came to see you, actually"
-            janitor "An old fella like me?"
-            :dialogue janitor-curious))
-  janitor "Be seein' ya, lass.")
+  (say "Hey there, kid. Wha brings ya here?")
+  (choice
+   ("Just exploring."
+    (say "Hmph.. Well stay away from the ice fields.")
+    (say "Tha blasted 'torney is yapping his gums at any poor sod thar."))
+   ("Nothing."
+    (say "Noffin? Figures ya kids have too much time these days."))
+   ("Came to see you, actually"
+    (say "An old fella like me?")
+    (jump janitor-curious)))
+  (say "Be seein' ya, lass."))
 
 (define-dialogue janitor-curious
-  janitor "Well what d'ya need then?"
-  :choice (("Just a chat."
-            janitor "Hrm, yar better off yapping to others here than me.")
-           ("I'd like to know where I am."
-            janitor "Yer at the land between wasteland and the plains."
-            janitor "Warmest spot on tha forsaken planet."))
-  janitor "Run along now, lass."
-  :end all)
-
+  (say "Well what d'ya need then?")
+  (choice
+   ("Just a chat."
+    (say "Hrm, yar better off yapping to others here than me."))
+   ("I'd like to know where I am."
+    (say "Yer at the land between wasteland and the plains.")
+    (say "Warmest spot on tha forsaken planet.")))
+  (say "Run along now, lass."))
 
 (define-dialogue cheery-hello
-  :tag start
-  cheery "You there! Welcome to the best spot on the planet! Everyone who's who is here!"
-  cheery "So welcome welcome welcome!!!"
-  :choice (("What's...")
-           ("I...")
-           ("Hello..?"))
-  cheery "Yeah! You! You are a ball of fire. You are a flaming, feisty, bold ball of fire."
-  cheery "You may feel like you get extinguished a lot, but you are set ablaze more times than you are drowned."
-  :choice (("Um...")
-           ("Okay...?")
-           ("Thanks, I guess."))
-  cheery "Yeah! You are smart, you are unique, you are interesting, you are creative, you are capable and you are important."
-  cheery "You can kick ass when you set your mind to it. There is no obstacle you can't overcome. Don't stop believing in your ass kicking skills, ever!"
-  :choice (("I'm going to go now."))
-  cheery "Yeah!!")
+  (say "You there! Welcome to the best spot on the planet! Everyone who's who is here!")
+  (say "So welcome welcome welcome!!!")
+  (choice
+   ("What's...")
+   ("I...")
+   ("Hello..?"))
+  (say "Yeah! You! You are a ball of fire. You are a flaming, feisty, bold ball of fire.")
+  (say "You may feel like you get extinguished a lot, but you are set ablaze more times than you are drowned.")
+  (choice
+   ("Um...")
+   ("Okay...?")
+   ("Thanks, I guess."))
+  (say "Yeah! You are smart, you are unique, you are interesting, you are creative, you are capable and you are important.")
+  (say "You can kick ass when you set your mind to it. There is no obstacle you can't overcome. Don't stop believing in your ass kicking skills, ever!")
+  (choice
+   ("I'm going to go now."))
+  (say "Yeah!!"))

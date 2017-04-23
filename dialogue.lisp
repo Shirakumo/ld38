@@ -29,7 +29,7 @@
 
 (define-shader-subject dialogue (sprite)
   ((partner :initform NIL :accessor partner)
-   (text :initform (make-instance 'text :text "AAAAAAA" :font (asset 'fonts 'dialogue)) :accessor text)
+   (text :initform (make-instance 'text :text "" :font (asset 'fonts 'dialogue)) :accessor text)
    (dialogue :initform NIL :accessor dialogue)
    (choice :initform 0 :accessor choice))
   (:default-initargs
@@ -46,26 +46,39 @@
 
 (define-handler (dialogue start-dialogue) (ev)
   (setf (partner dialogue) (entity ev))
-  (setf (dialogue dialogue)
-        (dialogue-next (dialogue (dialogue (entity ev))))))
+  (setf (dialogue dialogue) (dialogue (dialogue (entity ev)))))
+
+(defun diag-current (dialogue)
+  (first (dialogue dialogue)))
+
+(defun diag-advance (dialogue)
+  (pop (dialogue dialogue)))
 
 (define-handler (dialogue advance-dialogue advance-dialogue 10) (ev)
   (when (partner dialogue)
-    (setf (dialogue dialogue) (if (getf (dialogue dialogue) :choice)
-                                  (dialogue-next (dialogue dialogue) (choice dialogue))
-                                  (dialogue-next (dialogue dialogue))))
-    (unless (dialogue dialogue)
-      (issue *loop* 'end-dialogue))))
+    (let* ((next (rest (if (eql 'choice (first (diag-current dialogue)))
+                           (nth (1+ (choice dialogue)) (diag-current dialogue))
+                           (dialogue dialogue))))
+           (current (first next)))
+      (v:info :test "~a" next)
+      (case (first current)
+        ((NIL) (issue *loop* 'end-dialogue))
+        (mood ;; FIXME: Update mood
+         (setf (dialogue dialogue) (rest next)))
+        (change ;; FIXME: Change
+         (setf (dialogue dialogue) (rest next)))
+        (jump (setf (dialogue dialogue) (dialogue (second current))))
+        (T (setf (dialogue dialogue) next))))))
 
 (define-handler (dialogue next-choice) (ev)
-  (let ((choice (getf (dialogue dialogue) :choice)))
-    (when choice
-      (setf (choice dialogue) (mod (1+ (choice dialogue)) (length choice))))))
+  (let ((diag (diag-current dialogue)))
+    (when (eql 'choice (first diag))
+      (setf (choice dialogue) (mod (1+ (choice dialogue)) (length (rest diag)))))))
 
 (define-handler (dialogue prev-choice) (ev)
-  (let ((choice (getf (dialogue dialogue) :choice)))
-    (when choice
-      (setf (choice dialogue) (mod (1- (choice dialogue)) (length choice))))))
+  (let ((diag (diag-current dialogue)))
+    (when (eql 'choice (first diag))
+      (setf (choice dialogue) (mod (1- (choice dialogue)) (length (rest diag)))))))
 
 (define-handler (dialogue end-dialogue) (ev)
   (setf (partner dialogue) NIL))
@@ -73,7 +86,7 @@
 (defmethod paint :around ((dialogue dialogue) target)
   (let ((partner (partner dialogue))
         (text (text dialogue))
-        (diag (dialogue dialogue)))
+        (diag (diag-current dialogue)))
     (when partner
       (with-pushed-matrix
         (reset-matrix)
@@ -93,16 +106,17 @@
         (with-pushed-matrix
           (translate-by -460 -140 -1)
           (setf (color text) (vec 1 1 1))
-          (cond ((getf diag :choice)
-                 (loop for choice in (getf diag :choice)
-                       for i from 0
-                       do (setf (color text)
-                                (if (= i (choice dialogue))
-                                    (vec 1 1 1)
-                                    (vec 0.7 0.7 0.7)))
-                          (setf (text text) (getf choice :text))
-                          (paint text target)
-                          (translate-by 0 -40 0)))
-                ((getf diag :text)
-                 (setf (text text) (getf diag :text))
-                 (paint text target))))))))
+          (case (first diag)
+            (choice
+             (loop for choice in (cdr diag)
+                   for i from 0
+                   do (setf (color text)
+                            (if (= i (choice dialogue))
+                                (vec 1 1 1)
+                                (vec 0.7 0.7 0.7)))
+                      (setf (text text) (first choice))
+                      (paint text target)
+                      (translate-by 0 -40 0)))
+            (say
+             (setf (text text) (second diag))
+             (paint text target))))))))
