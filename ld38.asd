@@ -8,6 +8,7 @@
                (:file "world")
                (:file "character")
                (:file "dialogs")
+               (:file "ghost")
                (:file "player")
                (:file "story")
                (:file "main"))
