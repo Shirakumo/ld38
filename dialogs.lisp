@@ -49,3 +49,46 @@
            ("I'm sorry but I need to go."
             attorney "That is too bad, miss. I hope to see you again."))
   :end all)
+
+(define-dialogue janitor-hello
+  :tag start
+  janitor "Hey there, kid. Wha brings ya here?"
+  :choice (("Just exploring."
+            janitor "Hmph.. Well stay away from the ice fields."
+            janitor "Tha blasted 'torney is yapping his gums at any poor sod thar.")
+           ("Nothing."
+            janitor "Noffin? Figures ya kids have too much time these days.")
+           ("Came to see you, actually"
+            janitor "An old fella like me?"
+            :dialogue janitor-curious))
+  janitor "Be seein' ya, lass.")
+
+(define-dialogue janitor-curious
+  janitor "Well what d'ya need then?"
+  :choice (("Just a chat."
+            janitor "Hrm, yar better off yapping to others here than me.")
+           ("I'd like to know where I am."
+            janitor "Yer at the land between wasteland and the plains."
+            janitor "Warmest spot on tha forsaken planet."))
+  janitor "Run along now, lass."
+  :end all)
+
+
+(define-dialogue cheery-hello
+  :tag start
+  cheery "You there! Welcome to the best spot on the planet! Everyone who's who is here!"
+  cheery "So welcome welcome welcome!!!"
+  :choice (("What's...")
+           ("I...")
+           ("Hello..?"))
+  cheery "Yeah! You! You are a ball of fire. You are a flaming, feisty, bold ball of fire."
+  cheery "You may feel like you get extinguished a lot, but you are set ablaze more times than you are drowned."
+  :choice (("Um...")
+           ("Okay...?")
+           ("Thanks, I guess."))
+  cheery "Yeah! You are smart, you are unique, you are interesting, you are creative, you are capable and you are important."
+  cheery "You can kick ass when you set your mind to it. There is no obstacle you can't overcome. Don't stop believing in your ass kicking skills, ever!"
+  :choice (("I'm going to go now."))
+  cheery "Yeah!!")
+
+

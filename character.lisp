@@ -27,3 +27,25 @@
 
 (define-asset (sprites attorney) texture-asset
     (#P"mystery.png"))
+
+
+(define-shader-subject janitor (world-entity world-character sprite)
+  ()
+  (:default-initargs
+   :texture (asset 'sprites 'janitor)
+   :name :janitor
+   :angle 225))
+
+(define-asset (sprites janitor) texture-asset
+    (#P"mystery.png"))
+
+
+(define-shader-subject cheery (world-entity world-character sprite)
+  ()
+  (:default-initargs
+   :texture (asset 'sprites 'cheery)
+   :name :cheery
+   :angle 30))
+
+(define-asset (sprites cheery) texture-asset
+    (#P"mystery.png"))
