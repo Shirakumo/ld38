@@ -2,11 +2,21 @@
 
 (define-shader-subject player (world-entity sprite)
   ((velocity :initform 0 :accessor velocity)
-   (direction :initform :left :accessor direction))
+   (direction :initform :left :accessor direction)
+   (talk-text :initform (make-instance 'text :text "Talk") :accessor talk-text))
   (:default-initargs
    :texture (asset 'sprites 'player)
    :name :player
    :location (vec 0 0 1)))
+
+(defmethod load progn ((player player))
+  (load (talk-text player)))
+
+(defmethod offload progn ((player player))
+  (offload (talk-text player)))
+
+(defmethod register-object-for-pass :after (pass (player player))
+  (register-object-for-pass pass (talk-text player)))
 
 (define-asset (sprites player) texture-asset
     (#p"player.png"))
@@ -74,7 +84,8 @@
   (for:for ((entity over (scene *context*)))
     (when (and (typep entity 'world-character)
                (<= (abs (- (angle entity) (angle player))) 1))
-      )))
+      (translate-by -20 20 -1)
+      (paint (talk-text player) target))))
 
 (define-handler (player perform) (ev)
   )
