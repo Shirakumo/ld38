@@ -148,5 +148,12 @@
                       (paint text target)
                       (translate-by 0 -40 0)))
             (say
-             (setf (text text) (format NIL (second diag)))
+             (setf (text text) (break-lines (format NIL (second diag))))
              (paint text target))))))))
+
+(defun break-lines (text &optional (limit 50))
+  (if (<= (length text) limit)
+      text
+      (let ((pos (position #\  text :from-end T :end limit)))
+        (format NIL "~a~%~a"
+                (subseq text 0 pos) (break-lines (subseq text (1+ pos)))))))
