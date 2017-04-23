@@ -26,4 +26,4 @@
 
 (defmethod paint :before ((chicken chicken) target)
   (when (eql :sitting (state chicken))
-    (translate-by 0 -5 0)))
+    (translate-by 0 5 0)))

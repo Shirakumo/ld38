@@ -115,7 +115,7 @@
         (reset-matrix)
         (translate-by 0 0 -3)
         (with-pushed-matrix
-          (translate-by 300 50 0)
+          (translate-by 280 120 0)
           (setf (texture dialogue) (profile partner))
           (call-next-method))
         (with-pushed-matrix
