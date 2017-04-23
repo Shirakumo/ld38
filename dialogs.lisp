@@ -45,7 +45,8 @@
   attorney "It's time that we became uber-efficient with our three-dimensional organisational time-phases!"
   attorney "Would you like to hear more?"
   :choice (("I'd rather not right now."
-            attorney "That is fine, time is money as they say. I shall expect you to visit us at the symposium this spring.")
+            attorney "That is fine, time is money as they say."
+            attorney "I do not recall coming to it last week but I shall expect you to visit us at the symposium this spring.")
            ("I'm sorry but I need to go."
             attorney "That is too bad, miss. I hope to see you again."))
   :end all)
@@ -90,5 +91,3 @@
   cheery "You can kick ass when you set your mind to it. There is no obstacle you can't overcome. Don't stop believing in your ass kicking skills, ever!"
   :choice (("I'm going to go now."))
   cheery "Yeah!!")
-
-
