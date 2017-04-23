@@ -5,7 +5,7 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defclass story-chapter ()
     ((name :initarg :name :reader name)
-     (goals :initarg :goals :reader goals)
+     (goal :initarg :goal :reader goal)
      (endings :initarg :endings :reader endings)
      (branches :initarg :branches :reader branches)
      (dialogues :initarg :dialogues :reader dialogues))))
@@ -15,7 +15,7 @@
 (defmethod ending-p ((chapter story-chapter) ending)
   (find ending (endings chapter)))
 
-(defmacro define-chapter (name (goals) endings dialogues branches)
+(defmacro define-chapter (name (goal) endings dialogues branches)
   (let ((diag-table (make-hash-table)))
     (loop for (actor dialogue) in dialogues
           do (setf (gethash actor diag-table) dialogue))
@@ -23,7 +23,7 @@
        ()
        (:default-initargs
         :name ',name
-        :goals ,goals
+        :goal ,goal
         :endings ',endings
         :dialogues ,diag-table
         :branches ',branches))))
@@ -135,14 +135,17 @@
   (story-set-chapter 'bad-ending))
 
 (defun story-weight-branch (branch-number delta)
-  (unless (typep branch-number 'number)
-    (setf branch-number (parse-integer (format NIL "~a" branch-number))))
-  (unless (and delta (typep delta 'number))
-    (setf delta (parse-integer (format NIL "~a" delta))))
-  (incf (cadr (nth branch-number (branches (story-current-chapter)))) (or delta 1)))
+  (unless (typep delta 'number)
+    (setf delta (parse-integer (format NIL "~a" delta) :junk-allowed T)))
+  (let ((delta (or (when (typep delta 'number) delta) 1)))
+    (incf (cadr (nth branch-number (branches (story-current-chapter))))
+          delta)))
 
 (defun story-inc-goal (delta)
-  (incf (getf *story* :progress) (or delta 1))
+  (unless (typep delta 'number)
+    (setf delta (parse-integer (format NIL "~a" delta) :junk-allowed T)))
+  (let ((delta (or (when (typep delta 'number) delta) 1)))
+    (incf (getf *story* :progress) delta))
   (let ((chapter (story-current-chapter)))
     (when (<= (goal chapter) (getf *story* :progress))
       (meet-goal chapter))))
