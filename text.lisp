@@ -38,7 +38,7 @@ ABCDEFGHIJKLNOPQRSTUVWXYZ~
   (setf (vertex-array text) (cl-fond:compute-text (resource (font text)) (text text))))
 
 (defmethod (setf text) :after (string (text text))
-  (when (resource text)
+  (when (vertex-array text)
     (offload text)
     (load text)))
 
