@@ -86,7 +86,7 @@
        (when (and (typep entity 'world-character)
                   (<= (abs (- (angle entity) (angle player))) 1)
                   (dialogue entity))
-         (translate-by -20 20 -1)
+         (translate-by -20 40 -1)
          (paint (text player) target))))))
 
 (define-handler (player perform) (ev)
