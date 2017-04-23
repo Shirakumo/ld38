@@ -1,7 +1,7 @@
 (in-package #:ld38)
 
 (define-widget ld38 (QGLWidget main fullscreenable)
-  ()
+  ((zoom :initform 20 :accessor zoom))
   (:default-initargs
     :resolution (list 1024 768)
     :clear-color (vec 0 0 0)))
@@ -10,11 +10,14 @@
     (#p"forced-square.ttf"))
 
 (defmethod paint :before ((pipeline pipeline) (ld38 ld38))
-  (let ((w (width ld38)) (h (height ld38)))
+  (when (<= (clock (scene ld38)) 5)
+    (setf (zoom ld38) (ease (/ (clock (scene ld38)) 5) 'flare:expo-out 20 0.9)))
+  (let ((w (width ld38)) (h (height ld38))
+        (z (zoom ld38)))
     (reset-matrix)
     (gl:viewport 0 0 w h)
     (reset-matrix (view-matrix))
-    (scale-by (/ 2 w) (/ 2 h) 1 (view-matrix))
+    (scale-by (/ 2 w z) (/ 2 h z) 1 (view-matrix))
     (let ((player (unit :player (scene ld38))))
       (when player
         (rotate +vz+ (/ (* PI (- (angle player) 90)) -180))
