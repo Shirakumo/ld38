@@ -1,7 +1,7 @@
 (in-package #:ld38)
 
 (define-widget ld38 (QGLWidget main fullscreenable)
-  ((zoom :initform 20 :accessor zoom))
+  ((zoom :initform 1 :accessor zoom))
   (:default-initargs
     :resolution (list 1024 768)
     :clear-color (vec 0 0 0)))
@@ -11,7 +11,7 @@
 
 (defmethod paint :before ((pipeline pipeline) (ld38 ld38))
   (when (<= (clock (scene ld38)) 5)
-    (setf (zoom ld38) (ease (/ (clock (scene ld38)) 5) 'flare:expo-out 20 0.9)))
+    (setf (zoom ld38) (ease (/ (clock (scene ld38)) 5) 'flare:expo-out 100 0.9)))
   (let ((w (width ld38)) (h (height ld38))
         (z (zoom ld38)))
     (reset-matrix)
