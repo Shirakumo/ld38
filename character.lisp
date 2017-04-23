@@ -52,10 +52,10 @@
    :angle 135))
 
 (define-asset (sprites businessman) texture-asset
-    (#P"mystery.png"))
+    (#P"businessman.png"))
 
 (define-asset (sprites businessman-profile) texture-asset
-    (#p"mystery.png"))
+    (#P"businessman-profile.png"))
 
 (define-shader-subject farmer (world-entity world-character sprite)
   ()
