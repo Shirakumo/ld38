@@ -22,10 +22,10 @@
    :angle 93))
 
 (define-asset (sprites ghost) texture-asset
-    (#P"mystery.png"))
+    (#P"ghost.png"))
 
 (define-asset (sprites ghost-profile) texture-asset
-    (#P"mystery.png"))
+    (#P"ghost-profile.png"))
 
 (define-shader-subject pincers (world-entity world-character sprite)
   ()
