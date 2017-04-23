@@ -3,10 +3,17 @@
 (define-pool sprites
   :base 'ld38)
 
-(define-shader-subject sprite (vertex-subject textured-subject)
-  ()
+(define-shader-subject sprite (vertex-subject textured-subject located-entity)
+  ((direction :initform :right :accessor direction))
   (:default-initargs
    :vertex-array (asset 'geometry 'fullscreen-square)))
+
+(defmethod paint ((sprite sprite) target)
+  (with-pushed-matrix
+    (case (direction sprite)
+      (:left (rotate +vy+ PI)
+       (translate-by 0 0 (- (vz (location sprite))))))
+    (call-next-method)))
 
 (define-class-shader sprite :vertex-shader
   "

@@ -2,13 +2,13 @@
 
 (define-shader-subject player (world-entity sprite)
   ((velocity :initform 0 :accessor velocity)
-   (direction :initform :left :accessor direction)
    (state :initform :walking :accessor state)
    (text :initform (make-instance 'text :text "Talk") :accessor text))
   (:default-initargs
    :texture (asset 'sprites 'player)
    :name :player
-   :location (vec 0 0 1)))
+   :location (vec 0 0 1)
+   :angle 90))
 
 (defmethod load progn ((player player))
   (load (text player)))
@@ -79,11 +79,7 @@
              (T (setf (velocity player) 0)))
        (incf (angle player) (velocity player))))))
 
-(defmethod paint ((player player) target)
-  (with-pushed-matrix
-    (case (direction player)
-      (:left (rotate +vy+ PI)))
-    (call-next-method))
+(defmethod paint :after ((player player) target)
   (case (state player)
     (:walking
      (for:for ((entity over (scene *context*)))

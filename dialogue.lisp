@@ -106,7 +106,7 @@
     (when partner
       (with-pushed-matrix
         (reset-matrix)
-        (translate-by 0 0 -1)
+        (translate-by 0 0 -3)
         (with-pushed-matrix
           (translate-by 300 50 0)
           (setf (texture dialogue) (profile partner))

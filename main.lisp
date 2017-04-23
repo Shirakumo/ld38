@@ -32,6 +32,9 @@
       (enter (make-instance 'attorney) scene)
       (enter (make-instance 'pincers) scene)
       (enter (make-instance 'player) scene)
+      (dotimes (i 5)
+        (enter (make-instance 'chicken :angle (+ 300 (random 10))
+                                       :location (vec 0 0 (- 0.9 (/ i 40)))) scene))
       (enter (make-instance 'world) scene)
       ;; Must be last!
       (enter (make-instance 'dialogue) scene)))

@@ -9,6 +9,7 @@
                (:file "character")
                (:file "dialogs")
                (:file "player")
+               (:file "chicken")
                (:file "main"))
   :depends-on (:trial
                :cl-fond))
