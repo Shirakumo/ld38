@@ -17,7 +17,7 @@
   (:default-initargs
    :texture (asset 'sprites 'pincers)
    :profile (asset 'sprites 'pincers-profile)
-   :dialogue 'pincers-hello
+   :dialogue (dialogue 'pincers-hello)
    :name :pincers
    :angle 45))
 

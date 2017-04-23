@@ -30,7 +30,7 @@
 (define-shader-subject dialogue (sprite)
   ((partner :initform NIL :accessor partner)
    (text :initform (make-instance 'text :text "" :font (asset 'fonts 'dialogue)) :accessor text)
-   (dialogue :initform NIL :accessor dialogue)
+   (diag-stack :initform NIL :accessor diag-stack)
    (choice :initform 0 :accessor choice))
   (:default-initargs
    :texture (asset 'sprites 'textbox)))
@@ -46,29 +46,45 @@
 
 (define-handler (dialogue start-dialogue) (ev)
   (setf (partner dialogue) (entity ev))
-  (setf (dialogue dialogue) (dialogue (dialogue (entity ev)))))
+  (setf (diag-stack dialogue) (list (dialogue (entity ev))))
+  (diag-process-actions dialogue))
 
 (defun diag-current (dialogue)
-  (first (dialogue dialogue)))
+  (first (first (diag-stack dialogue))))
 
 (defun diag-advance (dialogue)
-  (pop (dialogue dialogue)))
+  (case (first (diag-current dialogue))
+    (choice
+     (let ((choice (pop (first (diag-stack dialogue)))))
+       (push (rest (nth (1+ (choice dialogue)) choice))
+             (diag-stack dialogue))))
+    (T
+     (or (pop (first (diag-stack dialogue)))
+         (pop (diag-stack dialogue))))))
+
+(defun diag-process-actions (dialogue)
+  (loop (let* ((current (diag-current dialogue)))
+          (ecase (first current)
+            ((end NIL)
+             (issue *loop* 'end-dialogue)
+             (return))
+            ((say choice)
+             (return))
+            (mood ;; FIXME: Update mood
+             (diag-advance dialogue))
+            (change
+             (case (second current)
+               (dialogue (setf (dialogue (partner dialogue))
+                               (dialogue (third current)))))
+             (diag-advance dialogue))
+            (jump
+             (setf (first (diag-stack dialogue))
+                   (dialogue (second current))))))))
 
 (define-handler (dialogue advance-dialogue advance-dialogue 10) (ev)
   (when (partner dialogue)
-    (let* ((next (rest (if (eql 'choice (first (diag-current dialogue)))
-                           (nth (1+ (choice dialogue)) (diag-current dialogue))
-                           (dialogue dialogue))))
-           (current (first next)))
-      (v:info :test "~a" next)
-      (case (first current)
-        ((NIL) (issue *loop* 'end-dialogue))
-        (mood ;; FIXME: Update mood
-         (setf (dialogue dialogue) (rest next)))
-        (change ;; FIXME: Change
-         (setf (dialogue dialogue) (rest next)))
-        (jump (setf (dialogue dialogue) (dialogue (second current))))
-        (T (setf (dialogue dialogue) next))))))
+    (diag-advance dialogue)
+    (diag-process-actions dialogue)))
 
 (define-handler (dialogue next-choice) (ev)
   (let ((diag (diag-current dialogue)))
