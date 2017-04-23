@@ -4,6 +4,7 @@
   :components ((:file "package")
                (:file "sprite")
                (:file "text")
+               (:file "dialogue")
                (:file "world")
                (:file "character")
                (:file "player")

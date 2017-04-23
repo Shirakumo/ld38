@@ -17,8 +17,8 @@
     (scale-by (/ 2 w) (/ 2 h) 1 (view-matrix))
     (let ((player (unit :player (scene ld38))))
       (when player
-        (rotate +vz+ (/ (* PI (- (angle player) 90)) -180) (view-matrix))
-        (translate (v- (location player)) (view-matrix))))))
+        (rotate +vz+ (/ (* PI (- (angle player) 90)) -180))
+        (translate (v- (location player)))))))
 
 (progn
   (defmethod setup-scene ((ld38 ld38))
@@ -28,7 +28,9 @@
       (enter (make-instance 'attorney) scene)
       (enter (make-instance 'pincers) scene)
       (enter (make-instance 'player) scene)
-      (enter (make-instance 'world) scene)))
+      (enter (make-instance 'world) scene)
+      ;; Must be last!
+      (enter (make-instance 'dialogue) scene)))
   (maybe-reload-scene))
 
 (progn
