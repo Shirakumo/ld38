@@ -11,6 +11,7 @@
                (:file "ghost")
                (:file "player")
                (:file "story")
+               (:file "chicken")
                (:file "main"))
   :depends-on (:trial
                :cl-fond))

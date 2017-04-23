@@ -59,8 +59,9 @@
        (push (rest (nth (1+ (choice dialogue)) choice))
              (diag-stack dialogue))))
     (T
-     (or (pop (first (diag-stack dialogue)))
-         (pop (diag-stack dialogue))))))
+     (pop (first (diag-stack dialogue)))
+     (unless (first (diag-stack dialogue))
+       (pop (diag-stack dialogue))))))
 
 (defun diag-process-actions (dialogue)
   (loop (let* ((current (diag-current dialogue)))
@@ -109,7 +110,7 @@
     (when partner
       (with-pushed-matrix
         (reset-matrix)
-        (translate-by 0 0 -1)
+        (translate-by 0 0 -3)
         (with-pushed-matrix
           (translate-by 300 50 0)
           (setf (texture dialogue) (profile partner))
@@ -137,5 +138,5 @@
                       (paint text target)
                       (translate-by 0 -40 0)))
             (say
-             (setf (text text) (second diag))
+             (setf (text text) (format NIL (second diag)))
              (paint text target))))))))

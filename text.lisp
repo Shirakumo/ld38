@@ -2,10 +2,10 @@
 
 (defparameter *charset*
   #.(format NIL "~
-abcdefghijklnopqrstuvwxyz~
-ABCDEFGHIJKLNOPQRSTUVWXYZ~
+abcdefghijklmnopqrstuvwxyz~
+ABCDEFGHIJKLMNOPQRSTUVWXYZ~
 0123456789 
-.,;:!?_-/()[]\"'`"))
+.,;:!?_-/()[]\"'`~~"))
 
 (define-pool fonts
   :base 'ld38)

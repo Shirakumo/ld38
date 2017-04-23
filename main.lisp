@@ -32,6 +32,9 @@
       (enter (make-instance 'attorney) scene)
       (enter (make-instance 'pincers) scene)
       (enter (make-instance 'player) scene)
+      (dotimes (i 5)
+        (enter (make-instance 'chicken :angle (+ 300 (random 10))
+                                       :location (vec 0 0 (- 0.9 (/ i 40)))) scene))
       (enter (make-instance 'world) scene)
       ;; Must be last!
       (enter (make-instance 'dialogue) scene)))
@@ -40,9 +43,8 @@
 (progn
   (defmethod setup-pipeline ((ld38 ld38))
     (let ((pipeline (pipeline ld38))
-          (pass1 (make-instance 'per-object-pass))
-          (pass2 (make-instance 'fxaa-pass)))
-      (connect-pass pass1 pass2 "previousPass" pipeline)))
+          (pass1 (make-instance 'per-object-pass)))
+      (register pass1 pipeline)))
   (maybe-reload-scene))
 
 (defun ld38 ()
