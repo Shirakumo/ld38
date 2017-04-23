@@ -88,7 +88,8 @@
     (:walking
      (for:for ((entity over (scene *context*)))
        (when (and (typep entity 'world-character)
-                  (<= (abs (- (angle entity) (angle player))) 1))
+                  (<= (abs (- (angle entity) (angle player))) 1)
+                  (dialogue entity))
          (translate-by -20 20 -1)
          (paint (text player) target))))))
 
@@ -97,7 +98,8 @@
     (:walking
      (for:for ((entity over (scene *context*)))
        (when (and (typep entity 'world-character)
-                  (<= (abs (- (angle entity) (angle player))) 1))
+                  (<= (abs (- (angle entity) (angle player))) 1)
+                  (dialogue entity))
          (setf (state player) :talking)
          (issue *loop* 'start-dialogue :entity entity))))))
 

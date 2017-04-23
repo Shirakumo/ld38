@@ -2,10 +2,12 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defclass world-character ()
-    ((profile :initarg :profile :accessor profile))
+    ((profile :initarg :profile :accessor profile)
+     (dialogue :initarg :dialogue :accessor dialogue))
     (:default-initargs
      :location (vec 0 0 2)
-     :profile (asset 'sprites 'whatever))))
+     :profile (asset 'sprites 'whatever)
+     :dialogue NIL)))
 
 (defmethod load progn ((character world-character))
   (load (profile character)))
@@ -15,6 +17,7 @@
   (:default-initargs
    :texture (asset 'sprites 'pincers)
    :profile (asset 'sprites 'pincers-profile)
+   :dialogue 'pincers-hello
    :name :pincers
    :angle 45))
 

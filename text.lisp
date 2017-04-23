@@ -1,10 +1,11 @@
 (in-package #:ld38)
 
-(defvar *charset*
+(defparameter *charset*
   #.(format NIL "~
 abcdefghijklnopqrstuvwxyz~
 ABCDEFGHIJKLNOPQRSTUVWXYZ~
-0123456789 .,;:!?_-/()[]"))
+0123456789 
+.,;:!?_-/()[]\"'`"))
 
 (define-pool fonts
   :base 'ld38)
@@ -28,10 +29,12 @@ ABCDEFGHIJKLNOPQRSTUVWXYZ~
 (define-shader-subject text ()
   ((font :initarg :font :accessor font)
    (text :initarg :text :accessor text)
+   (color :initarg :color :accessor color)
    (vertex-array :initarg :vertex-array :initform NIL :accessor vertex-array))
   (:default-initargs
    :font (asset 'fonts 'default)
-   :text ""))
+   :text ""
+   :color (vec 1 1 1)))
 
 (defmethod load progn ((text text))
   (load (font text))
@@ -53,7 +56,8 @@ ABCDEFGHIJKLNOPQRSTUVWXYZ~
     (let ((shader (shader-program-for-pass pass text)))
       (setf (uniform shader "model_matrix") (model-matrix))
       (setf (uniform shader "view_matrix") (view-matrix))
-      (setf (uniform shader "projection_matrix") (projection-matrix)))
+      (setf (uniform shader "projection_matrix") (projection-matrix))
+      (setf (uniform shader "text_color") (color text)))
     (let ((vao (vertex-array text)))
       (when vao
         (gl:bind-texture :texture-2d (cl-fond:atlas (resource (font text))))
@@ -80,8 +84,9 @@ void main(){
 out vec4 color;
 
 uniform sampler2D atlas;
+uniform vec3 text_color;
 
 void main(){
   float intensity = texture(atlas, texcoord).r;
-  color = vec4(intensity);
+  color = vec4(intensity*text_color, intensity);
 }")

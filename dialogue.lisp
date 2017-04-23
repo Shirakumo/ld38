@@ -22,14 +22,16 @@
 
 (define-asset (fonts dialogue) font-asset
     (#p"forced-square.ttf")
-  :size 50)
+  :size 30)
 
 (define-asset (sprites textbox) texture-asset
     (#p"textbox.png"))
 
 (define-shader-subject dialogue (sprite)
   ((partner :initform NIL :accessor partner)
-   (text :initform (make-instance 'text :text "AAAAAAA" :font (asset 'fonts 'dialogue)) :accessor text))
+   (text :initform (make-instance 'text :text "AAAAAAA" :font (asset 'fonts 'dialogue)) :accessor text)
+   (dialogue :initform NIL :accessor dialogue)
+   (choice :initform 0 :accessor choice))
   (:default-initargs
    :texture (asset 'sprites 'textbox)))
 
@@ -43,33 +45,62 @@
   (register-object-for-pass pass (text dialogue)))
 
 (define-handler (dialogue start-dialogue) (ev)
-  (setf (partner dialogue) (entity ev)))
+  (setf (partner dialogue) (entity ev))
+  (setf (dialogue dialogue)
+        (dialogue-next (dialogue (dialogue (entity ev))))))
 
 (define-handler (dialogue advance-dialogue advance-dialogue 10) (ev)
   (when (partner dialogue)
-    (issue *loop* 'end-dialogue)))
+    (setf (dialogue dialogue) (dialogue-next (dialogue dialogue)))
+    (unless (dialogue dialogue)
+      (issue *loop* 'end-dialogue))))
 
 (define-handler (dialogue next-choice) (ev)
-  )
+  (let ((choice (getf (dialogue dialogue) :choice)))
+    (when choice
+      (setf (choice dialogue) (mod (1+ (choice dialogue)) (length choice))))))
 
 (define-handler (dialogue prev-choice) (ev)
-  )
+  (let ((choice (getf (dialogue dialogue) :choice)))
+    (when choice
+      (setf (choice dialogue) (mod (1- (choice dialogue)) (length choice))))))
 
 (define-handler (dialogue end-dialogue) (ev)
   (setf (partner dialogue) NIL))
 
 (defmethod paint :around ((dialogue dialogue) target)
-  (when (partner dialogue)
-    (with-pushed-matrix
-      (reset-matrix)
-      (translate-by 0 0 -1)
+  (let ((partner (partner dialogue))
+        (text (text dialogue))
+        (diag (dialogue dialogue)))
+    (when partner
       (with-pushed-matrix
-        (translate-by 300 50 0)
-        (setf (texture dialogue) (profile (partner dialogue)))
-        (call-next-method))
-      (with-pushed-matrix
-        (setf (texture dialogue) (asset 'sprites 'textbox))
-        (call-next-method))
-      (with-pushed-matrix
-        (translate-by -460 -130 0)
-        (paint (text dialogue) target)))))
+        (reset-matrix)
+        (translate-by 0 0 -1)
+        (with-pushed-matrix
+          (translate-by 300 50 0)
+          (setf (texture dialogue) (profile partner))
+          (call-next-method))
+        (with-pushed-matrix
+          (setf (texture dialogue) (asset 'sprites 'textbox))
+          (call-next-method))
+        (with-pushed-matrix
+          (translate-by -440 -75 0)
+          (setf (text text) (string (name partner)))
+          (setf (color text) (vec 0 0 0))
+          (paint text target))
+        (with-pushed-matrix
+          (translate-by -460 -140 -1)
+          (setf (color text) (vec 1 1 1))
+          (cond ((getf diag :choice)
+                 (loop for choice in (getf diag :choice)
+                       for i from 0
+                       do (setf (color text)
+                                (if (= i (choice dialogue))
+                                    (vec 1 1 1)
+                                    (vec 0.7 0.7 0.7)))
+                          (setf (text text) (getf choice :text))
+                          (paint text target)
+                          (translate-by 0 -40 0)))
+                ((getf diag :text)
+                 (setf (text text) (getf diag :text))
+                 (paint text target))))))))

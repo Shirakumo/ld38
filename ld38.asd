@@ -7,6 +7,7 @@
                (:file "dialogue")
                (:file "world")
                (:file "character")
+               (:file "dialogs")
                (:file "player")
                (:file "main"))
   :depends-on (:trial
