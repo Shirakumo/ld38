@@ -59,8 +59,9 @@
        (push (rest (nth (1+ (choice dialogue)) choice))
              (diag-stack dialogue))))
     (T
-     (or (pop (first (diag-stack dialogue)))
-         (pop (diag-stack dialogue))))))
+     (pop (first (diag-stack dialogue)))
+     (unless (first (diag-stack dialogue))
+       (pop (diag-stack dialogue))))))
 
 (defun diag-process-actions (dialogue)
   (loop (let* ((current (diag-current dialogue)))
