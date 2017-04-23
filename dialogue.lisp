@@ -121,23 +121,24 @@
       (with-pushed-matrix
         (reset-matrix)
         (translate-by 0 0 -3)
-        (with-pushed-matrix
-          (translate-by 280 120 0)
-          (setf (texture dialogue) (profile partner))
-          (call-next-method))
-        (with-pushed-matrix
-          (setf (texture dialogue) (asset 'sprites 'textbox))
-          (call-next-method))
-        (with-pushed-matrix
-          (translate-by -440 -75 0)
-          (setf (text text) (string (name partner)))
-          (setf (color text) (vec 0 0 0))
-          (paint text target))
-        (with-pushed-matrix
-          (translate-by -460 -140 -1)
-          (setf (color text) (vec 1 1 1))
-          (case (first diag)
-            (choice
+        (case (first diag)
+          (choice
+           (with-pushed-matrix
+             (translate-by -280 120 0)
+             (rotate +vy+ PI)
+             (setf (texture dialogue) (profile (unit :player (scene *context*))))
+             (call-next-method))
+           (with-pushed-matrix
+             (rotate +vy+ PI)
+             (setf (texture dialogue) (asset 'sprites 'textbox))
+             (call-next-method))
+           (with-pushed-matrix
+             (translate-by 180 -75 0)
+             (setf (text text) "YOU")
+             (setf (color text) (vec 0 0 0))
+             (paint text target))
+           (with-pushed-matrix
+             (translate-by -420 -140 -1)
              (loop for choice in (cdr diag)
                    for i from 0
                    do (setf (color text)
@@ -146,9 +147,24 @@
                                 (vec 0.7 0.7 0.7)))
                       (setf (text text) (first choice))
                       (paint text target)
-                      (translate-by 0 -40 0)))
-            (say
+                      (translate-by 0 -40 0))))
+          (say
+           (with-pushed-matrix
+             (translate-by 280 120 0)
+             (setf (texture dialogue) (profile partner))
+             (call-next-method))
+           (with-pushed-matrix
+             (setf (texture dialogue) (asset 'sprites 'textbox))
+             (call-next-method))
+           (with-pushed-matrix
+             (translate-by -440 -75 0)
+             (setf (text text) (string (name partner)))
+             (setf (color text) (vec 0 0 0))
+             (paint text target))
+           (with-pushed-matrix
+             (translate-by -460 -140 -1)
              (setf (text text) (break-lines (format NIL (second diag))))
+             (setf (color text) (vec 1 1 1))
              (paint text target))))))))
 
 (defun break-lines (text &optional (limit 50))

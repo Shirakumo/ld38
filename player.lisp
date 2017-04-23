@@ -3,11 +3,13 @@
 (define-shader-subject player (world-entity sprite)
   ((velocity :initform 0 :accessor velocity)
    (state :initform :walking :accessor state)
+   (profile :initarg :profile :accessor profile)
    (text :initform (make-instance 'text :text "Talk") :accessor text))
   (:default-initargs
    :texture (asset 'sprites 'player)
    :name :player
    :location (vec 0 0 1)
+   :profile (asset 'sprites 'farmer-profile)
    :angle 90))
 
 (defmethod load progn ((player player))
