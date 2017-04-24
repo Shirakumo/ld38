@@ -32,7 +32,7 @@
       (when (eql :intro (state ld38))
         (setf (zoom ld38) (ease (/ (clock (scene ld38)) 5) 'flare:expo-out 500 0.5))
         (when (<= 5 (clock (scene ld38)))
-          #-windows (cl-soloud:play (resource (asset 'music 'background)) (soloud ld38))
+          #-win32 (cl-soloud:play (resource (asset 'music 'background)) (soloud ld38))
           (setf (zoom ld38) 1)
           (setf (state ld38) :play)
           (setf (state player) :walking)))
