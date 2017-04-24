@@ -64,7 +64,7 @@
    :profile (asset 'sprites 'farmer-profile)
    :dialogue (dialogue 'farmer-hello)
    :name :farmer
-   :angle 225))
+   :angle 285))
 
 (define-asset (sprites farmer) texture-asset
     (#P"farmer.png"))

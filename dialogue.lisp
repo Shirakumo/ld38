@@ -82,7 +82,7 @@
              (diag-advance dialogue))
             (try
              (case (second current)
-               (ending (unless (story-ending-p (third current)) (story-bad-ending))))
+               (ending (story-attempt-ending (third current))))
              (diag-advance dialogue))
             (accuse
              (setf (first (diag-stack dialogue))
@@ -92,6 +92,7 @@
              (case (second current)
                (dialogue (setf (dialogue (partner dialogue))
                                (dialogue (third current))))
+               (flag (story-trigger-flag (or (third current) (name (partner dialogue)))))
                (chapter (story-change-chapter))) ;; This changes the partner's dialogue
              (diag-advance dialogue))
             (jump

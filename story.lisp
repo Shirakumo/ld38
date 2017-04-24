@@ -10,6 +10,8 @@
 
 (defmethod meet-goal ((chapter story-chapter)))
 
+(defmethod start-chapter ((chapter story-chapter)))
+
 (defmacro define-chapter (name (goal) dialogues)
 `(defclass ,name (story-chapter)
    ()
@@ -26,16 +28,48 @@
     (setf (dialogue ghost) (dialogue 'ghost-progress-1))))
 
 (define-chapter chapter-2 (3)
-  ((:ghost ghost-start-2)
-   (:businessman businessman-suspect-1)))
+  ((:ghost ghost-start-2)))
 
 (defmethod meet-goal ((chapter chapter-2))
   (let ((ghost (unit :ghost (scene *context*))))
     (setf (dialogue ghost) (dialogue 'ghost-progress-2))))
 
+(defmethod start-chapter ((chapter chapter-2))
+  (let ((b-man (unit :businessman (scene *context*)))
+        (farmer (unit :farmer (scene *context*)))
+        (niece (unit :niece (scene *context*)))
+        (crab (unit :crab (scene *context*))))
+    (setf (dialogue b-man) (dialogue (if (story-flag-p 'businessman)
+                                         'businessman-suspect
+                                         'businessman-innocent))
+          (dialogue farmer) (dialogue (if (story-flag-p 'farmer)
+                                          'farmer-suspect
+                                          'farmer-innocent))
+          (dialogue niece) (dialogue (if (story-flag-p 'niece)
+                                         'niece-suspect
+                                         'niece-innocent))
+          (dialogue crab) (dialogue (if (story-flag-p 'crab)
+                                        'crab-suspect
+                                        'crab-innocent))))
+  (unless (story-flag-p 'businessman)
+    (story-disable-ending 'businessman))
+  (unless (story-flag-p 'farmer)
+    (story-disable-ending 'farmer))
+  (unless (story-flag-p 'niece)
+    (story-disable-ending 'niece))
+  (unless (story-flag-p 'crab)
+    (story-disable-ending 'crab))
+  (unless (or (story-flag-p 'businessman)
+              (story-flag-p 'farmer)
+              (story-flag-p 'niece))
+    (story-disable-ending 'suicide))
+  (unless (and (story-flag-p 'businessman)
+               (story-flag-p 'farmer)
+               (story-flag-p 'niece))
+    (story-disable-ending 'all)))
+
 (define-chapter chapter-3 (1)
-  ((:ghost ghost-idle-3)
-   (:businessman businessman-suspect-2)))
+  ((:ghost ghost-idle-3)))
 
 (define-chapter good-ending (0)
   ((:ghost ghost-good-ending)))
@@ -56,16 +90,19 @@
     (loop for (actor-name dialogue) in (dialogues chapter)
           for actor = (unit actor-name (scene *context*))
           do (setf (dialogue actor) (dialogue dialogue)))
+    (start-chapter chapter)
     (setf (getf *story* :chapter) chapter
-          (getf *story* :progress) 0)
+          (getf *story* :progress) 0
+          (getf *story* :flags) NIL)
     chapter))
 
 (defun story-disable-ending (ending &key others)
-  (setf (getf *story* :disabled-endings)
-        (if others
-            (loop for (ending . NIL) in (getf *story* :endings)
-                  collecting ending)
-            (append (list ending) (getf *story* :disabled-endings)))))
+  (cond
+    (others
+     (loop for (end . NIL) in (getf *story* :endings)
+           when (not (eql end ending)) collect end))
+    ((story-ending-p ending)
+     (append (list ending) (getf *story* :disabled-endings)))))
 
 (defun story-change-chapter ()
   (let ((chapter (story-next-chapter)))
@@ -109,8 +146,8 @@
   (unless (story-flag-p flag)
     (setf (getf *story* :flags) (append (getf *story* :flags) (list flag)))))
 
-(defun story-flag-p (wanted-flag)
-  (when (find flag (getf *story* flags))))
+(defun story-flag-p (flag)
+  (when (find flag (getf *story* :flags))))
 
 (defun initialize-story ()
   (setf (getf *story* :chapter) (make-instance 'chapter-1)
