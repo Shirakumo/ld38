@@ -1,24 +1,37 @@
 (in-package #:ld38)
 
 (define-widget ld38 (QGLWidget main fullscreenable)
-  ((zoom :initform 1 :accessor zoom))
+  ((zoom :initform 1 :accessor zoom)
+   (started :initform NIL :accessor started)
+   (soloud :initform (make-instance 'cl-soloud:soloud) :accessor soloud))
   (:default-initargs
     :resolution (list 1024 768)
     :clear-color (vec 0 0 0)))
 
+(define-finalizer (ld38 clear-soloud) ()
+  (cl-soloud:free (soloud ld38)))
+
 (define-asset (fonts default) font-asset
     (#p"forced-square.ttf"))
 
+(define-asset (music background) audio-asset
+    (#p"comfortable-mystery-4.mp3")
+  :loop T)
+
 (defmethod paint :before ((pipeline pipeline) (ld38 ld38))
-  (when (<= (clock (scene ld38)) 5)
-    (setf (zoom ld38) (ease (/ (clock (scene ld38)) 5) 'flare:expo-out 100 0.9)))
-  (let ((w (width ld38)) (h (height ld38))
-        (z (zoom ld38)))
-    (reset-matrix)
-    (gl:viewport 0 0 w h)
-    (reset-matrix (view-matrix))
-    (scale-by (/ 2 w z) (/ 2 h z) 1 (view-matrix))
-    (let ((player (unit :player (scene ld38))))
+  (let ((player (unit :player (scene ld38))))
+    (unless (started ld38)
+      (setf (zoom ld38) (ease (/ (clock (scene ld38)) 5) 'flare:expo-out 500 0.5))
+      (when (<= 5 (clock (scene ld38)))
+        (setf (zoom ld38) 1)
+        (setf (started ld38) T)
+        (setf (state player) :walking)))
+    (let ((w (width ld38)) (h (height ld38))
+          (z (zoom ld38)))
+      (reset-matrix)
+      (gl:viewport 0 0 w h)
+      (reset-matrix (view-matrix))
+      (scale-by (/ 2 w z) (/ 2 h z) 1 (view-matrix))
       (when player
         (rotate +vz+ (/ (* PI (- (angle player) 90)) -180))
         (translate (v- (location player)))))))
@@ -27,6 +40,7 @@
   (defmethod setup-scene ((ld38 ld38))
     (let ((scene (scene ld38)))
       (initialize-story)
+      (cl-soloud:stop (soloud ld38))
       ;; Must be first
       (for:for ((npc in '(ghost pincers businessman farmer niece)))
         (enter (make-instance npc) scene))

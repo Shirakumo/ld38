@@ -2,6 +2,7 @@
 (asdf:defsystem ld38
   :serial T
   :components ((:file "package")
+               (:file "audio")
                (:file "sprite")
                (:file "text")
                (:file "dialogue")
@@ -15,4 +16,5 @@
                (:file "chicken")
                (:file "main"))
   :depends-on (:trial
-               :cl-fond))
+               :cl-fond
+               :cl-soloud))

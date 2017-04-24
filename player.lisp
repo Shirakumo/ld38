@@ -2,7 +2,7 @@
 
 (define-shader-subject player (world-entity sprite)
   ((velocity :initform 0 :accessor velocity)
-   (state :initform :walking :accessor state)
+   (state :initform :talking :accessor state)
    (profile :initarg :profile :accessor profile)
    (text :initform (make-instance 'text :text "Talk") :accessor text)
    (animation :initform -1 :accessor animation)
