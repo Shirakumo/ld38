@@ -10,18 +10,14 @@
    :texture (asset 'sprites 'gamestart)
    :vertex-array (asset 'geometry 'fullscreen-square)))
 
-(defmethod load progn ((screen screen))
-  (load (asset 'sprites 'gamestart))
-  (load (asset 'sprites 'gameover)))
-
 (define-asset (sprites gamestart) texture-asset
-    (#p"whatever.png"))
+    (#p"gamestart.png"))
 
 (define-asset (sprites gameover) texture-asset
-    (#p"whatever.png"))
+    (#p"gameover.png"))
 
 (define-handler (screen gameover) (ev)
-  (setf (texture screen) (asset 'sprites 'gameover))
+  (setf (texture screen) (load (asset 'sprites 'gameover)))
   (setf (state screen) :fade-in))
 
 (define-handler (screen tick) (ev)
