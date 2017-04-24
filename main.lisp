@@ -1,16 +1,18 @@
 (in-package #:ld38)
+(in-readtable :qtools)
 
-(define-widget ld38 (QGLWidget main fullscreenable)
+(define-widget ld38 (QGLWidget main)
   ((zoom :initform 1 :accessor zoom)
    (started :initform NIL :accessor started)
    (soloud :initform (make-instance 'cl-soloud:soloud) :accessor soloud))
   (:default-initargs
-    :resolution (list 1024 768)
     :clear-color (vec 0 0 0)))
 
+(define-initializer (ld38 set-resolution) ()
+  (q+:set-fixed-size ld38 1024 768))
+
 (define-finalizer (ld38 clear-soloud) ()
-  (cl-soloud:stop (soloud ld38))
-  (cl-soloud:free (soloud ld38)))
+  (cl-soloud:stop (soloud ld38)))
 
 (define-asset (fonts default) font-asset
     (#p"forced-square.ttf"))
