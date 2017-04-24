@@ -5,20 +5,22 @@
    (state :initform :walking :accessor state)
    (profile :initarg :profile :accessor profile)
    (text :initform (make-instance 'text :text "Talk") :accessor text)
-   (animation :initform 0 :accessor animation)
+   (animation :initform -1 :accessor animation)
    (start-clock :initform 0.0 :accessor start-clock))
   (:default-initargs
    :texture (asset 'sprites 'player-idle)
    :name :player
    :location (vec 0 0 1)
-   :profile (asset 'sprites 'farmer-profile)
+   :profile (asset 'sprites 'player-profile)
    :angle 90
    :radius 1988))
 
 (defmethod load progn ((player player))
   (load (text player))
   (load (asset 'sprites 'player-walking))
-  (load (asset 'sprites 'player-idle)))
+  (load (asset 'sprites 'player-idle))
+  (load (asset 'sprites 'player-profile))
+  (inc-anim player 0 0.0))
 
 (defmethod offload progn ((player player))
   (offload (text player)))
@@ -30,6 +32,8 @@
     (#p"colleen-idle.png"))
 (define-asset (sprites player-walking) texture-asset
     (#p"colleen-walking.png"))
+(define-asset (sprites player-profile) texture-asset
+    (#p"colleen-profile.png"))
 
 (defun inc-anim (player animation clock)
   (destructuring-bind (frames duration sprite) (nth animation
@@ -117,7 +121,7 @@
        (when (and (typep entity 'world-character)
                   (<= (abs (- (angle entity) (angle player))) 1)
                   (dialogue entity))
-         (translate-by -20 40 -1)
+         (translate-by -20 60 -1)
          (paint (text player) target))))))
 
 (define-handler (player perform) (ev)

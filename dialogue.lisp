@@ -125,7 +125,7 @@
         (case (first diag)
           (choice
            (with-pushed-matrix
-             (translate-by -280 120 0)
+             (translate-by -270 120 0)
              (rotate +vy+ PI)
              (setf (texture dialogue) (profile (unit :player (scene *context*))))
              (call-next-method))
