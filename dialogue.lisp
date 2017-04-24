@@ -77,7 +77,8 @@
             (affect
              (case (second current)
                (goal (story-inc-goal (third current)))
-               (branch (story-weight-branch (third current) (fourth current))))
+               (ending (story-disable-ending (third current)
+                                             :others (eql 'others (fourth current)))))
              (diag-advance dialogue))
             (try
              (case (second current)

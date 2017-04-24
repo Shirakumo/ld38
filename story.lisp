@@ -5,6 +5,7 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defclass story-chapter ()
     ((name :initarg :name :reader name)
+     (goal :initarg :goal :reader goal)
      (dialogues :initarg :dialogues :reader dialogues))))
 
 (defmethod meet-goal ((chapter story-chapter)))
@@ -14,6 +15,7 @@
    ()
    (:default-initargs
     :name ',name
+    :goal ,goal
     :dialogues ',dialogues)))
 
 (define-chapter chapter-1 (4)
@@ -25,7 +27,6 @@
 
 (define-chapter chapter-2 (3)
   ((:ghost ghost-start-2)
-   (:pincers pincers-clicks)
    (:businessman businessman-suspect-1)))
 
 (defmethod meet-goal ((chapter chapter-2))
@@ -64,7 +65,7 @@
         (if others
             (loop for (ending . NIL) in (getf *story* :endings)
                   collecting ending)
-            (append ending (getf *story* :disabled-endings)))))
+            (append (list ending) (getf *story* :disabled-endings)))))
 
 (defun story-change-chapter ()
   (let ((chapter (story-next-chapter)))
