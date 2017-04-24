@@ -26,6 +26,7 @@
 (progn
   (defmethod setup-scene ((ld38 ld38))
     (let ((scene (scene ld38)))
+      (initialize-story)
       ;; Must be first
       (for:for ((npc in '(ghost pincers businessman farmer niece)))
         (enter (make-instance npc) scene))

@@ -16,17 +16,14 @@
   (find ending (endings chapter)))
 
 (defmacro define-chapter (name (goal) endings dialogues branches)
-  (let ((diag-table (make-hash-table)))
-    (loop for (actor dialogue) in dialogues
-          do (setf (gethash actor diag-table) dialogue))
-    `(defclass ,name (story-chapter)
-       ()
-       (:default-initargs
-        :name ',name
-        :goal ,goal
-        :endings ',endings
-        :dialogues ,diag-table
-        :branches ',branches))))
+`(defclass ,name (story-chapter)
+   ()
+   (:default-initargs
+    :name ',name
+    :goal ,goal
+    :endings ',endings
+    :dialogues ',dialogues
+    :branches ',branches)))
 
 (define-chapter first-chapter (4)
   () ()
@@ -103,11 +100,12 @@
         finally (return (first next-branch))))
 
 (defun story-set-chapter (chapter)
-  (loop for actor-name in (alexandria:hash-table-keys (dialogues chapter))
-        for actor = (unit actor-name (scene *context*))
-        do (setf (dialogue actor) (gethash actor-name (dialogues chapter))))
-  (setf (getf *story* :chapter) (make-instance chapter)
-        (getf *story* :progress) 0))
+  (let ((chapter (if (typep chapter 'symbol) (make-instance chapter) chapter)))
+    (loop for (actor-name dialogue) in (dialogues chapter)
+          for actor = (unit actor-name (scene *context*))
+          do (setf (dialogue actor) (dialogue dialogue)))
+    (setf (getf *story* :chapter) chapter
+          (getf *story* :progress) 0)))
 
 (defun story-change-chapter ()
   (let ((chapter (story-next-chapter)))
@@ -142,6 +140,7 @@
           delta)))
 
 (defun story-inc-goal (delta)
+  (v:warn :inc-goal "~a is of type ~a!" delta (type-of delta))
   (unless (typep delta 'number)
     (setf delta (parse-integer (format NIL "~a" delta) :junk-allowed T)))
   (let ((delta (or (when (typep delta 'number) delta) 1)))

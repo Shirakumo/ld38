@@ -80,7 +80,8 @@
              (diag-advance dialogue))
             (check
              (case (second current)
-               (ending (unless (story-check-ending (third current)) (story-bad-ending)))))
+               (ending (unless (story-check-ending (third current)) (story-bad-ending))))
+             (diag-advance dialogue))
             (accuse
              (setf (first (diag-stack dialogue))
                    (dialogue (if (story-attempt-ending (second current))
