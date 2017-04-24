@@ -55,9 +55,9 @@
 (defun diag-advance (dialogue)
   (case (first (diag-current dialogue))
     (choice
-     (let ((choice (pop (first (diag-stack dialogue)))))
-       (push (rest (nth (1+ (choice dialogue)) choice))
-             (diag-stack dialogue))
+     (let* ((choice (pop (first (diag-stack dialogue))))
+            (diag (rest (nth (1+ (choice dialogue)) choice))))
+       (when diag (push diag (diag-stack dialogue)))
        (setf (choice dialogue) 0)))
     (T
      (pop (first (diag-stack dialogue)))
