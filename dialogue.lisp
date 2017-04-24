@@ -71,7 +71,7 @@
             (ecase (first current)
               ((end NIL)
                (issue *loop* 'end-dialogue)
-               (when (eql 'story (second current))
+               (when (or (eql 'story (second current)) (eql 'game (second current)))
                  (issue *loop* 'gameover))
                (return))
               ((say choice)
@@ -100,8 +100,8 @@
                  (chapter (story-change-chapter))) ;; This changes the partner's dialogue
                (diag-advance dialogue))
               (jump
-               (set-dialogue (setf (first (diag-stack dialogue))
-                                   (dialogue (second current))))))))))
+               (setf (first (diag-stack dialogue))
+                     (dialogue (second current)))))))))
 
 (define-handler (dialogue advance-dialogue advance-dialogue 10) (ev)
   (when (partner dialogue)
