@@ -3,8 +3,8 @@
 (define-dialogue businessman-hello
   (affect goal)
   (say "Greetings there, young miss.")
-  (say "We have been having great progress here!")
   (say "Say, would you happen to have a moment?")
+  (say "We have been having great progress here!")
   (choice
    ("Certainly, sir."
     (say "Marvellous choice, miss!")
@@ -18,11 +18,11 @@
 (define-dialogue businessman-excited
   (affect branch 1)
   (mood excited)
-  (say "My organisation believes in deconstructed management mobility.")
-  (say "Today just happens to mark the 20th anniversary celebrations of our millennial monitored contingencies.")
-  (say "A you may know, we need a more contemporary reimagining of our global transitional processing.")
-  (say "Our bleeding edge exploratory research points to optional monitored matrix approaches.")
-  (say "It's time that we became uber-efficient with our three-dimensional organisational time-phases!")
+  (say "My organisation believes in deconstructed management mobility.~%
+Today just happens to mark the 20th anniversary celebrations of our millennial monitored contingencies.")
+  (say "A you may know, we need a more contemporary reimagining of our global transitional processing.~%
+Our bleeding edge exploratory research points to optional monitored matrix approaches.~%
+It's time that we became uber-efficient with our three-dimensional organisational time-phases!")
   (say "Would you like to hear more?")
   (choice
    ("I'd rather not right now."
@@ -36,7 +36,6 @@
   (say "If you don't mind, I have important business to attend to."))
 
 (define-dialogue businessman-suspect-1
-  (affect branch 1)
   (affect goal)
   (say "The businessman keeps taking his phone out of his pocket, fidgeting with it nervously for a time, and then returns it back into his pocket.")
   (say "He keeps repeating this motion and refuses to acknowledge you. Completely unlike his earlier appearance."))
@@ -46,11 +45,11 @@
   (say "Would you like to accuse him?")
   (choice
    ("Yes."
-    (accuse businessman businessman-accuse-true businessman-accuse-false))
+    (affect goal)
+    (accuse businessman businessman-true businessman-false))
    ("No.")))
 
-(define-dialogue businessman-accuse-true
-  (affect branch 1)
+(define-dialogue businessman-true
   (affect goal)
   (say "Ah.. You're back.")
   (say "I knew someone would find out eventually. Did not expect it'd be this quickly.")
@@ -63,5 +62,5 @@
     (say "As you wish then.")))
   (say "Go back to the poor ghost. I will hand myself over to the authorities of this world."))
 
-(define-dialogue businessman-accuse-false
+(define-dialogue businessman-false
   (say "(Note to self, REMEMBER TO WRITE THIS OUT.)"))

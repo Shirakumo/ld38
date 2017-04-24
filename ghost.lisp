@@ -26,7 +26,8 @@
      ("Fine."
       (say "Thank you."))
      ("I said no."
-      (check ending bad)
+      (say "...")
+      (try ending bad)
       (end dialogue)))))
   (say "Now, this world we inhabit is quite small. You can easily traverse it within moments.")
   (say "There are a few persons of interest here. If you could go see what you can find out from them.")
@@ -65,25 +66,27 @@
 (define-dialogue ghost-progress-2
   (say "So, we're done! Now, tell me what do you think?")
   (choice
-   ("I think it was the businessman."
-    (check ending businessman))
-   ("I think it was the farmer."
-    (check ending farmer))
-   ("I think it was the farmer's niece."
-    (check ending niece))
-   ("I think they all did it."
-    (check ending all))
+   ("I think it was the businessman.")
+   ("I think it was the farmer.")
+   ("I think it was the farmer's niece.")
+   ("I think they all did it.")
    ("That crab has been acting awfully suspicious."
-    (check ending crab))
+    (say "The crab..? Well, if you're certain.. And.."))
    ("I don't think it was any of them."
-    (check ending suicide)
     (say "But that'd mean...!")
     (say "I... will have to think on that...")
+    (change dialogue ghost-dots)
     (end dialogue)))
-  (say "I do feel like as if I've spent time with them just recently.")
-  (say "But still.. I sure hope you're right..")
+  (say "I do feel like as if I've spent time with them just recently.~%
+But still.. I sure hope you're right..")
   (say "Well, go apprehend them!")
-  (change chapter))
+  (change dialogue ghost-idle-3))
+
+(define-dialogue ghost-idle-3
+  (say "I'll be right here. Go get 'em!"))
+
+(define-dialogue ghost-dots
+  (say "..."))
 
 (define-dialogue ghost-good-ending
   (say "So it really was them.")
@@ -98,11 +101,24 @@
   (say "Thank you.")
   (end story))
 
+(define-dialogue ghost-crab-ending
+  (say "...")
+  (say "... ...")
+  (say "... ... What.")
+  (say "I just.. No, I won't deal with this.")
+  (say "Goodbye.")
+  (end story.))
+
+(define-dialogue ghost-suicide-ending
+  (say "(Note to self, REMEMBER TO WRITE THIS!)")
+  (end story))
+
 (define-dialogue ghost-bad-ending
   (say "...")
   (say "... ...")
   (say "Perhaps you thought this was going to be just a fun game.")
-  (say "Or perhaps your best just was not enough this time.")
+  (say "Perhaps you thought this was going to be just a fun game.~%
+Or perhaps your best just was not enough this time.")
   (say "...")
   (say "I cannot hold my form clear any longer.")
   (say "This is where we bid farewell.")

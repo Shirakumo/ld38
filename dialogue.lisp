@@ -78,9 +78,9 @@
                (goal (story-inc-goal (third current)))
                (branch (story-weight-branch (third current) (fourth current))))
              (diag-advance dialogue))
-            (check
+            (try
              (case (second current)
-               (ending (unless (story-check-ending (third current)) (story-bad-ending))))
+               (ending (unless (story-ending-p (third current)) (story-bad-ending))))
              (diag-advance dialogue))
             (accuse
              (setf (first (diag-stack dialogue))
