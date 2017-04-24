@@ -6,6 +6,7 @@
                (:file "sprite")
                (:file "text")
                (:file "dialogue")
+               (:file "screen")
                (:file "world")
                (:file "character")
                (:file "dialogs")

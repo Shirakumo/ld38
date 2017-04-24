@@ -69,6 +69,8 @@
           (ecase (first current)
             ((end NIL)
              (issue *loop* 'end-dialogue)
+             (when (eql 'story (second current))
+               (issue *loop* 'gameover))
              (return))
             ((say choice)
              (return))
