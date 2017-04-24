@@ -4,7 +4,7 @@
   :base 'ld38)
 
 (define-shader-subject sprite (vertex-subject textured-subject located-entity)
-  ((direction :initform :right :accessor direction)
+  ((direction :initarg :direction :initform :right :accessor direction)
    (frame-index :initform 0 :accessor frame-index)
    (frame-count :initform 1 :accessor frame-count))
   (:default-initargs

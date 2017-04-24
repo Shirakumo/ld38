@@ -13,7 +13,8 @@
    :location (vec 0 0 1)
    :profile (asset 'sprites 'player-profile)
    :angle 90
-   :radius 1988))
+   :radius 1988
+   :direction :left))
 
 (defmethod load progn ((player player))
   (load (text player))
