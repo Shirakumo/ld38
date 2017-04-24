@@ -33,9 +33,9 @@
   (say "Our families have been living here since the beginning, ya know.")
   (say "Well it used ta be us two 'til that suited fellow came here.")
   (say "(The farmer's features tighten as she talks about the businessman at the ice fields.")
-  (say "He comes here and kept yappin' about how perfect our world is and how he's going to make his \"big break\" here. And a whole bunch of gobbletalk.")
+  (say "He comes here and kept yappin' about how perfect our world is and how he's going to make his \"big break\" here. And a whole bunch of gobbledygook.")
   (say "Chased him right off, I did! Me gradmommy's ol' pitchfork and all!")
-  (say "(She leans on her pitchfork, her eyes glassy and staring at nothing.)")
+  (say "(She leans on her pitchfork, clearly a far newer model, her eyes glassy and staring at nothing.)")
   (say "(You hear her murmur about what a classic \"'lander-meet-suit\" scene it was.)")
   (change dialogue farmer-daydreaming))
 

@@ -65,39 +65,41 @@
        (pop (diag-stack dialogue))))))
 
 (defun diag-process-actions (dialogue)
-  (loop (let* ((current (diag-current dialogue)))
-          (ecase (first current)
-            ((end NIL)
-             (issue *loop* 'end-dialogue)
-             (return))
-            ((say choice)
-             (return))
-            (mood ;; FIXME: Update mood
-             (diag-advance dialogue))
-            (affect
-             (case (second current)
-               (goal (story-inc-goal (third current)))
-               (ending (story-disable-ending (third current)
-                                             :others (eql 'others (fourth current)))))
-             (diag-advance dialogue))
-            (try
-             (case (second current)
-               (ending (story-attempt-ending (third current))))
-             (diag-advance dialogue))
-            (accuse
-             (setf (first (diag-stack dialogue))
-                   (dialogue (if (story-attempt-ending (second current))
-                                 (third current) (fourth current)))))
-            (change
-             (case (second current)
-               (dialogue (setf (dialogue (partner dialogue))
-                               (dialogue (third current))))
-               (flag (story-trigger-flag (or (third current) (name (partner dialogue)))))
-               (chapter (story-change-chapter))) ;; This changes the partner's dialogue
-             (diag-advance dialogue))
-            (jump
-             (setf (first (diag-stack dialogue))
-                   (dialogue (second current))))))))
+  (flet ((set-dialogue (new-dialogue)
+           (setf (first (diag-stack dialogue))
+                 (dialogue new-dialogue))))
+    (loop (let* ((current (diag-current dialogue)))
+            (ecase (first current)
+              ((end NIL)
+               (issue *loop* 'end-dialogue)
+               (return))
+              ((say choice)
+               (return))
+              (mood ;; FIXME: Update mood
+               (diag-advance dialogue))
+              (affect
+               (case (second current)
+                 (goal (story-inc-goal (third current)))
+                 (ending (story-disable-ending (third current)
+                                               :others (eql 'others (fourth current)))))
+               (diag-advance dialogue))
+              (try
+               (case (second current)
+                 (ending (story-attempt-ending (third current)))
+                 (flag (when (story-flag-p (second current))
+                         (set-dialogue (third current)))))
+               (diag-advance dialogue))
+              (accuse
+               (set-dialogue (if (story-attempt-ending (second current))
+                                 (third current) (fourth current))))
+              (change
+               (case (second current)
+                 (dialogue (set-dialogue (third current)))
+                 (flag (story-trigger-flag (or (third current) (name (partner dialogue)))))
+                 (chapter (story-change-chapter))) ;; This changes the partner's dialogue
+               (diag-advance dialogue))
+              (jump
+               (set-dialogue (second current))))))))
 
 (define-handler (dialogue advance-dialogue advance-dialogue 10) (ev)
   (when (partner dialogue)

@@ -2,6 +2,7 @@
 
 (define-dialogue businessman-hello
   (affect goal)
+  (say "(You run into awfully sharp dressed man with leather shoes polished to glint in the sunlight.)")
   (say "Greetings there, young miss.")
   (say "Say, would you happen to have a moment?")
   (say "Say, would you happen to have a moment? We have been making great progress here!")
@@ -44,12 +45,29 @@
 
 (define-dialogue businessman-innocent
   (affect-goal)
-  (say "(TODO: TALK ABOUT THE FARMER HERE.)"))
+  (say "(The businessman seems to be enjoying the chill breeze that runs through here.)")
+  (say "Hello again. This is a lovely little world, isn't it?")
+  (choice
+   ("I think so too."
+    (say "(The man gives you an approving nod.)"))
+   ("Not really?"
+    (say "Ahh, perhaps it just takes a certain kind of a mind then."))
+   ("What makes you say that?"))
+  (say "One end of chill, feeding the river that runs to the other side.")
+  (say "Other end.. perfect for hm...")
+  (say "Other end.. perfect for hm... ...")
+  (say "Other end.. perfect for hm... ... Life.")
+  (say "(He falls into thought. Better leave him to them.)")
+  (change dialogue businessman-thoughtful))
+
+(define-dialogue businessman-thoughtful
+  (say "(The businessman is deep in thought.)"))
 
 (define-dialogue businessman-suspect
   (affect goal)
-  (say "The businessman keeps taking his phone out of his pocket, fidgeting with it nervously for a time, and then returns it back into his pocket.")
-  (say "He keeps repeating this motion and refuses to acknowledge you. Completely unlike his earlier appearance."))
+  (say "(The businessman keeps taking his phone out of his pocket, fidgeting with it nervously for a time, and then returns it back into his pocket.)")
+  (say "(He keeps repeating this motion and refuses to acknowledge you. Completely unlike his earlier appearance.)")
+  (say "(Curiously, his previously well polished shoes are now muddy.)"))
 
 (define-dialogue businessman-accusation
   (say "(The businessman is listening intently to someone on his phone and keeps trying to wave you away.)")
@@ -63,7 +81,7 @@
 (define-dialogue businessman-true
   (affect goal)
   (say "Ah.. You're back.")
-  (say "Ah.. You're back. (He puts his phone away with a click.)")
+  (say "(He puts his phone away with a click.)")
   (say "I knew someone would find out eventually. Did not expect it'd be this quickly.")
   (say "But perhaps it is for the best.")
   (say "Would you like to hear this poor man's story?")
