@@ -39,7 +39,7 @@
       (scale-by (/ 2 w z) (/ 2 h z) 1 (view-matrix))   
       (rotate +vz+ (/ (* PI (- (angle player) 90)) -180))
       (translate (v- (location player))))
-    (unless player
+    (when (and (not player) (<= 1 (clock (scene ld38))))
       (issue (scene ld38) 'load-everything))))
 
 ;; This is a very inconvenient way of getting a load screen.
