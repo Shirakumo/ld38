@@ -11,6 +11,8 @@
                (:file "dialogs")
                (:file "ghost")
                (:file "businessman")
+               (:file "farmer")
+               (:file "niece")
                (:file "player")
                (:file "story")
                (:file "chicken")

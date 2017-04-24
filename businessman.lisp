@@ -16,7 +16,6 @@
     (change dialogue businessman-disappointed))))
 
 (define-dialogue businessman-excited
-  (affect branch 1)
   (mood excited)
   (say "My organisation believes in deconstructed management mobility.~%
 Today just happens to mark the 20th anniversary celebrations of our millennial monitored contingencies.")
