@@ -19,4 +19,8 @@
                (:file "main"))
   :depends-on (:trial
                :cl-fond
-               :cl-soloud))
+               :cl-soloud)
+  :defsystem-depends-on (:qtools)
+  :build-operation "qt-program-op"
+  :build-pathname "ld38"
+  :entry-point "ld38:ld38")
