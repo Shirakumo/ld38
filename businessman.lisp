@@ -44,7 +44,7 @@
   (say "(The businessman has begun to work on something on his phone. Better not disturb him.)"))
 
 (define-dialogue businessman-innocent
-  (affect-goal)
+  (affect goal)
   (say "(The businessman seems to be enjoying the chill breeze that runs through here.)")
   (say "Hello again. This is a lovely little world, isn't it?")
   (choice
