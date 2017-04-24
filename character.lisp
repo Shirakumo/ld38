@@ -80,7 +80,7 @@
    :angle 30))
 
 (define-asset (sprites niece) texture-asset
-    (#P"mystery.png"))
+    (#P"niece.png"))
 
 (define-asset (sprites niece-profile) texture-asset
-    (#p"mystery.png"))
+    (#p"niece-profile.png"))
