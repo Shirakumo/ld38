@@ -45,8 +45,8 @@
     (say "I think they're in looooove!")
     (say "Ma always used to say that even the horse kicks out of love! It's gotta be true!"))
    ("No idea who you mean."
-    (say "Woooow, you're not very smart are you?"))
-   (change dialogue niece-hibye)))
+    (say "Woooow, you're not very smart are you?")))
+  (change dialogue niece-hibye))
 
 (define-dialogue niece-hibye
   (say "Hi!")

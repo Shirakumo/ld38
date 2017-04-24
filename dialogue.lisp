@@ -66,8 +66,7 @@
 
 (defun diag-process-actions (dialogue)
   (flet ((set-dialogue (new-dialogue)
-           (setf (first (diag-stack dialogue))
-                 (dialogue new-dialogue))))
+           (setf (dialogue (partner dialogue)) (dialogue new-dialogue))))
     (loop (let ((current (diag-current dialogue)))
             (ecase (first current)
               ((end NIL)
@@ -101,7 +100,8 @@
                  (chapter (story-change-chapter))) ;; This changes the partner's dialogue
                (diag-advance dialogue))
               (jump
-               (set-dialogue (second current))))))))
+               (set-dialogue (setf (first (diag-stack dialogue))
+                                   (dialogue (second current))))))))))
 
 (define-handler (dialogue advance-dialogue advance-dialogue 10) (ev)
   (when (partner dialogue)
