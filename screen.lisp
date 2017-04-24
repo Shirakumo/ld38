@@ -8,7 +8,8 @@
    (state :initform :visible :accessor state))
   (:default-initargs
    :texture (asset 'sprites 'gamestart)
-   :vertex-array (asset 'geometry 'fullscreen-square)))
+   :vertex-array (asset 'geometry 'fullscreen-square)
+   :name :screen))
 
 (define-asset (sprites gamestart) texture-asset
     (#p"gamestart.png"))
@@ -17,6 +18,9 @@
     (#p"gameover.png"))
 
 (define-handler (screen gameover) (ev)
+  (clear (scene *context*))
+  (enter screen (scene *context*))
+  (setf (state *context*) :gameover)
   (setf (texture screen) (load (asset 'sprites 'gameover)))
   (setf (state screen) :fade-in))
 

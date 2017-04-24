@@ -3,7 +3,7 @@
 
 (define-widget ld38 (QGLWidget main)
   ((zoom :initform 1 :accessor zoom)
-   (started :initform NIL :accessor started)
+   (state :initform :loading :accessor state)
    (soloud :initform (make-instance 'cl-soloud:soloud) :accessor soloud))
   (:default-initargs
     :clear-color (vec 0 0 0)))
@@ -29,17 +29,17 @@
     (gl:viewport 0 0 w h)
     (reset-matrix (view-matrix)) 
     (when player
-      (unless (started ld38)
+      (when (eql :intro (state ld38))
         (setf (zoom ld38) (ease (/ (clock (scene ld38)) 5) 'flare:expo-out 500 0.5))
         (when (<= 5 (clock (scene ld38)))
           #-windows (cl-soloud:play (resource (asset 'music 'background)) (soloud ld38))
           (setf (zoom ld38) 1)
-          (setf (started ld38) T)
+          (setf (state ld38) :play)
           (setf (state player) :walking)))
       (scale-by (/ 2 w z) (/ 2 h z) 1 (view-matrix))   
       (rotate +vz+ (/ (* PI (- (angle player) 90)) -180))
       (translate (v- (location player))))
-    (when (and (not player) (<= 1 (clock (scene ld38))))
+    (when (and (eql :loading (state ld38)) (<= 1 (clock (scene ld38))))
       (issue (scene ld38) 'load-everything))))
 
 ;; This is a very inconvenient way of getting a load screen.
@@ -50,6 +50,7 @@
   (let* ((ld38 *context*)
          (scene (scene ld38))
          (pipeline (pipeline ld38)))
+    (setf (zoom ld38) 500)
     (load (asset 'music 'background))
     ;; Must be first
     (initialize-story)
@@ -69,11 +70,11 @@
     (load scene)
     (load pipeline)
     (reset scene)
-    (setf (started ld38) NIL)))
+    (setf (state ld38) :intro)))
 
 (defmethod setup-scene ((ld38 ld38))
   (let ((scene (scene ld38)))
-    (setf (started ld38) T)
+    (setf (state ld38) :loading)
     (cl-soloud:stop (soloud ld38))
     (setf (cl-soloud:volume (soloud ld38)) 0.1)
     (enter (make-instance 'screen) scene)))

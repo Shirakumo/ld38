@@ -114,6 +114,9 @@
               (inc-anim player 0 (clock *loop*))))
        (incf (angle player) (velocity player))))))
 
+(define-handler (player gameover) (ev)
+  (setf (state player) :nothing))
+
 (defmethod paint :after ((player player) target)
   (case (state player)
     (:walking
