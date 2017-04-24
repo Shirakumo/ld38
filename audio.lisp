@@ -20,5 +20,5 @@
     (cl-soloud:load-file source file)
     (setf (resource asset) source)))
 
-(defmethod finalize-resource ((asset (eql 'track)) source)
+(defmethod finalize-resource ((asset (eql 'audio-asset)) source)
   (cl-soloud:free source))

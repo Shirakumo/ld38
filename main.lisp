@@ -9,6 +9,7 @@
     :clear-color (vec 0 0 0)))
 
 (define-finalizer (ld38 clear-soloud) ()
+  (cl-soloud:stop (soloud ld38))
   (cl-soloud:free (soloud ld38)))
 
 (define-asset (fonts default) font-asset
@@ -23,6 +24,7 @@
     (unless (started ld38)
       (setf (zoom ld38) (ease (/ (clock (scene ld38)) 5) 'flare:expo-out 500 0.5))
       (when (<= 5 (clock (scene ld38)))
+        (cl-soloud:play (resource (asset 'music 'background)) (soloud ld38))
         (setf (zoom ld38) 1)
         (setf (started ld38) T)
         (setf (state player) :walking)))
@@ -39,9 +41,12 @@
 (progn
   (defmethod setup-scene ((ld38 ld38))
     (let ((scene (scene ld38)))
-      (initialize-story)
+      (setf (started ld38) NIL)
       (cl-soloud:stop (soloud ld38))
+      (setf (cl-soloud:volume (soloud ld38)) 0.1)
+      (load (asset 'music 'background))
       ;; Must be first
+      (initialize-story)
       (for:for ((npc in '(ghost pincers businessman farmer niece)))
         (enter (make-instance npc) scene))
       (enter (make-instance 'player) scene)
