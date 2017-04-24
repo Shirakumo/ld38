@@ -62,6 +62,7 @@
   (:default-initargs
    :texture (asset 'sprites 'farmer)
    :profile (asset 'sprites 'farmer-profile)
+   :dialogue (dialogue 'farmer-hello)
    :name :farmer
    :angle 225))
 
@@ -76,6 +77,7 @@
   (:default-initargs
    :texture (asset 'sprites 'niece)
    :profile (asset 'sprites 'niece-profile)
+   :dialogue (dialogue 'niece-hello)
    :name :niece
    :angle 30))
 

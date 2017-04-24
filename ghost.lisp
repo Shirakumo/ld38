@@ -77,8 +77,7 @@
     (say "I... will have to think on that...")
     (change dialogue ghost-dots)
     (end dialogue)))
-  (say "I do feel like as if I've spent time with them just recently.~%
-But still.. I sure hope you're right..")
+  (say "I do feel like as if I've spent time with them just recently.~%But still.. I sure hope you're right..")
   (say "Well, go apprehend them!")
   (change dialogue ghost-idle-3))
 
@@ -117,8 +116,7 @@ But still.. I sure hope you're right..")
   (say "...")
   (say "... ...")
   (say "Perhaps you thought this was going to be just a fun game.")
-  (say "Perhaps you thought this was going to be just a fun game.~%
-Or perhaps your best just was not enough this time.")
+  (say "Perhaps you thought this was going to be just a fun game.~%Or perhaps your best just was not enough this time.")
   (say "...")
   (say "I cannot hold my form clear any longer.")
   (say "This is where we bid farewell.")

@@ -171,6 +171,7 @@
              (paint text target))))))))
 
 (defun break-lines (text &optional (limit 50))
+  ;; FIXME: This does unnecessary line-breaks if the given text already has line-breaks in it
   (if (<= (length text) limit)
       text
       (let ((pos (position #\  text :from-end T :end limit)))

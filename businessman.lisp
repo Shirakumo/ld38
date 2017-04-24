@@ -4,8 +4,7 @@
   (affect goal)
   (say "Greetings there, young miss.")
   (say "Say, would you happen to have a moment?")
-  (say "Say, would you happen to have a moment?
-We have been making great progress here!")
+  (say "Say, would you happen to have a moment?~%We have been making great progress here!")
   (choice
    ("Certainly, sir."
     (say "Marvellous choice, miss!")
@@ -21,14 +20,11 @@ We have been making great progress here!")
 (define-dialogue businessman-excited
   (mood excited)
   (say "My organisation believes in deconstructed management mobility.")
-  (say "My organisation believes in deconstructed management mobility.
-Today just happens to mark the 20th anniversary celebrations of our millennial monitored contingencies.")
+  (say "My organisation believes in deconstructed management mobility.~%Today just happens to mark the 20th anniversary celebrations of our millennial monitored contingencies.")
   (say "A you may know, we need a more contemporary reimagining of our global transitional processing.")
-  (say "A you may know, we need a more contemporary reimagining of our global transitional processing.
-Our bleeding edge exploratory research points to optional monitored matrix approaches.")
+  (say "A you may know, we need a more contemporary reimagining of our global transitional processing.~%Our bleeding edge exploratory research points to optional monitored matrix approaches.")
   (say "It's time that we became uber-efficient with our three-dimensional organisational time-phases!")
-  (say "It's time that we became uber-efficient with our three-dimensional organisational time-phases!
-Would you like to hear more?")
+  (say "It's time that we became uber-efficient with our three-dimensional organisational time-phases!~%Would you like to hear more?")
   (choice
    ("I'd rather not right now."
     (say "That is fine, time is money as they say.")

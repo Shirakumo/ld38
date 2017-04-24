@@ -3,8 +3,7 @@
 (define-dialogue farmer-hello
   (affect goal)
   (say "Hey thar, lassie.")
-  (say "Hey thar, lassie.~%
-Wha' brings ya to this part of tha worl'?"))
+  (say "Hey thar, lassie.~%Wha' brings ya to this part of tha worl'?"))
 
 (define-dialogue farmer-suspect-1
   (affect goal)
