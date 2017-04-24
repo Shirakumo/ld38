@@ -90,7 +90,8 @@
     (say "(TODO: blah blah blah debtors blah blah must succeed blah blah previous startups)"))
    ("No."
     (say "As you wish then.")))
-  (say "Go back to the poor ghost. I will hand myself over to the authorities of this world."))
+  (say "Go back to the poor ghost. I will hand myself over to the authorities of this world.")
+  (change dialogue businessman-gone))
 
 (define-dialogue businessman-false
   (say "Hold on a moment.")
@@ -102,4 +103,8 @@
   (say "And here I was going to offer her a partnership in my organisation!")
   (say "JUSTICE SHALL PREVAIL!")
   (say "(He storms off.)")
-  (end game))
+  (change dialogue businessman-gone)
+  (affect ending bad others))
+
+(define-dialogue businessman-gone
+  (say "(He's gone! Nothing here!)"))

@@ -27,8 +27,8 @@
       (say "Thank you."))
      ("I said no."
       (say "...")
-      (try ending bad)
-      (end dialogue)))))
+      (affect ending bad others)
+      (end game)))))
   (say "Now, this world we inhabit is quite small. You can easily traverse it within moments.")
   (say "There are a few persons of interest here. If you could go see what you can find out from them.")
   (say "And thank you most kindly for doing this.")
@@ -60,7 +60,7 @@
   (change dialogue ghost-idle-2))
 
 (define-dialogue ghost-idle-2
-  (say "Come no, apprentice detective.")
+  (say "Come now, junior detective.")
   (say "There's more leg work to be done!"))
 
 (define-dialogue ghost-progress-2

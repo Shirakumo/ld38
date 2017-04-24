@@ -85,7 +85,7 @@
                (diag-advance dialogue))
               (try
                (case (second current)
-                 (ending (story-attempt-ending (third current)))
+                 (ending (story-attempt-ending (or (third current) (name (partner dialogue)))))
                  (flag (when (story-flag-p (second current))
                          (set-dialogue (third current)))))
                (diag-advance dialogue))

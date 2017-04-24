@@ -57,13 +57,77 @@
   (say "Would you like to accuse him?")
   (choice
    ("Yes."
+    (say "(You approach the young girl sternly.)")
     (affect goal)
     (accuse niece niece-true niece-false))
    ("No.")))
 
 (define-dialogue niece-true
-  (say "(Note to self, REMEMBER TO WRITE THIS OUT.)")
-  (affect goal))
+  (affect goal)
+  (say "(The girl freezes as you approach her with determination.)")
+  (choice
+   ("(Try to greet her.)")
+   ("(Grab her from shoulders and lower yourself to her eye level.)"))
+  (say "(She refuses to look you directly in the eye.)")
+  (choice
+   ("So what happened?"
+    (jump niece-what-happened))
+   ("You're in trouble now."
+    (say "...")))
+  (choice
+   ("We need to clear this all up.")
+   ("What was that? Out with it."
+    (say "(The girl is starting to tremble.)")))
+  (jump niece-what-happened))
+
+(define-dialogue niece-what-happened
+  (say "...")
+  (say "... ...")
+  (say "It was an accident...")
+  (say "Auntie was playing with Mr Fancypants and...")
+  (say "She was going to shoot him...")
+  (choose
+   ("Who was?")
+   ("Your auntie had a gun?"
+    (say "No!")))
+  (say "The new lady. The dead one...")
+  (say "(She finally looks you square in the eyes.)")
+  (say "So I pushed her, and it went off.")
+  (change flag))
+
+(define-dialogue niece-what-now
+  (say "So what happens now?")
+  (choice
+   ("You're going to jail."
+    (say "(The girl falls down into tears.)")
+    (change dialogue niece-crying))
+   ("Now I go to the ghost and tell her what happened."
+    (say "Oh.."))))
+
+(define-dialogue niece-crying
+  (say "(She's on the ground. Crying. Good job.)"))
 
 (define-dialogue niece-false
-  (say "(Note to self, REMEMBER TO WRITE THIS OUT.)"))
+  (affect ending bad others)
+  (choice
+   ("So, it was you all along."
+    (say "Um.. I was what? Am I in trouble?"))
+   ("You will have long years in prison."
+    (say "(The girl immediately freezes and stares at you with wide eyes.)"))
+   ("What do you have to defend yourself?"
+    (say "Huh?")))
+  (say "(You inform the girl of her crime.)")
+  (say "What? No! I didn't do it!")
+  (say "I haven't hurt anyone!")
+  (say "(She starts to back away.)")
+  (choice
+   ("Take a step closer.")
+   ("Glare at her sternly."
+    (change dialogue niece-crying)
+    (jump niece-crying)))
+  (say "You've got it all wrong!")
+  (say "(The girl suddenly sprints off.)")
+  (change dialogue niece-gone))
+
+(define-dialogue niece-gone
+  (say "(She's gone!)"))
