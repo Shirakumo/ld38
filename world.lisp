@@ -9,7 +9,8 @@
     (#p"world.png"))
 
 (defclass world-entity (located-entity)
-  ((angle :initarg :angle :initform 90 :accessor angle)))
+  ((angle :initarg :angle :initform 90 :accessor angle)
+   (radius :initarg :radius :initform 2013 :accessor radius)))
 
 (defmethod initialize-instance :after ((entity world-entity) &key)
   (setf (angle entity) (angle entity)))
@@ -20,10 +21,9 @@
       (setf (angle entity) (mod value 360))))
 
 (defmethod (setf angle) :after (value (entity world-entity))
-  (let ((phi (/ (* PI value) 180))
-        (r 2013))
-    (setf (vx (location entity)) (* r (cos phi))
-          (vy (location entity)) (* r (sin phi)))))
+  (let ((phi (/ (* PI value) 180)))
+    (setf (vx (location entity)) (* (radius entity) (cos phi))
+          (vy (location entity)) (* (radius entity) (sin phi)))))
 
 (defmethod paint :before ((entity world-entity) target)
   (rotate +vz+ (/ (* PI (- (angle entity) 90)) 180)))

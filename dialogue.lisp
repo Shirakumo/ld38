@@ -57,7 +57,8 @@
     (choice
      (let ((choice (pop (first (diag-stack dialogue)))))
        (push (rest (nth (1+ (choice dialogue)) choice))
-             (diag-stack dialogue))))
+             (diag-stack dialogue))
+       (setf (choice dialogue) 0)))
     (T
      (pop (first (diag-stack dialogue)))
      (unless (first (diag-stack dialogue))
@@ -125,7 +126,7 @@
         (case (first diag)
           (choice
            (with-pushed-matrix
-             (translate-by -280 120 0)
+             (translate-by -270 120 0)
              (rotate +vy+ PI)
              (setf (texture dialogue) (profile (unit :player (scene *context*))))
              (call-next-method))

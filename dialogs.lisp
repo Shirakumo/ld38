@@ -15,17 +15,28 @@
   `(setf (dialogue ',name) ',def))
 
 (define-dialogue pincers-hello
-  (say "The crab clicks its pincers at you.")
+  (say "(The crab clicks its pincers at you)")
   (choice
    ("Hello, little fellow."
-    (say "The crab stares at you intently."))
+    (say "(The crab stares at you intently)"))
    ("What is a crab doing here?"
-    (say "The crab waves its pincers at you."))
+    (say "(The crab waves its pincers at you)"))
    ("It's a crab."
-    (say "The crab ignores you."))))
+    (say "(The crab ignores you)")))
+  (choice
+   ("(Leave it alone)")
+   ("(Pet it)"
+    (change dialogue pincers-clicks)
+    (jump pincers-clicks))
+   ("Boo!"
+    (change dialogue pincers-scream)
+    (jump pincers-scream))))
 
 (define-dialogue pincers-clicks
-  (say "The crab clickety clacks its pincers at your general direction."))
+  (say "(The crab clickety clicks its pincers affectionately)"))
+
+(define-dialogue pincers-scream
+  (say "AAAAAAAAAAAAAAAA"))
 
 (define-dialogue janitor-hello
   (say "Hey there, kid. Wha brings ya here?")

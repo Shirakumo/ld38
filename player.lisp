@@ -2,18 +2,25 @@
 
 (define-shader-subject player (world-entity sprite)
   ((velocity :initform 0 :accessor velocity)
-   (state :initform :walking :accessor state)
+   (state :initform :talking :accessor state)
    (profile :initarg :profile :accessor profile)
-   (text :initform (make-instance 'text :text "Talk") :accessor text))
+   (text :initform (make-instance 'text :text "Talk") :accessor text)
+   (animation :initform -1 :accessor animation)
+   (start-clock :initform 0.0 :accessor start-clock))
   (:default-initargs
-   :texture (asset 'sprites 'player)
+   :texture (asset 'sprites 'player-idle)
    :name :player
    :location (vec 0 0 1)
-   :profile (asset 'sprites 'farmer-profile)
-   :angle 90))
+   :profile (asset 'sprites 'player-profile)
+   :angle 90
+   :radius 1988))
 
 (defmethod load progn ((player player))
-  (load (text player)))
+  (load (text player))
+  (load (asset 'sprites 'player-walking))
+  (load (asset 'sprites 'player-idle))
+  (load (asset 'sprites 'player-profile))
+  (inc-anim player 0 0.0))
 
 (defmethod offload progn ((player player))
   (offload (text player)))
@@ -21,8 +28,27 @@
 (defmethod register-object-for-pass :after (pass (player player))
   (register-object-for-pass pass (text player)))
 
-(define-asset (sprites player) texture-asset
-    (#p"player.png"))
+(define-asset (sprites player-idle) texture-asset
+    (#p"colleen-idle.png"))
+(define-asset (sprites player-walking) texture-asset
+    (#p"colleen-walking.png"))
+(define-asset (sprites player-profile) texture-asset
+    (#p"colleen-profile.png"))
+
+(defun inc-anim (player animation clock)
+  (destructuring-bind (frames duration sprite) (nth animation
+                                                    '((20 2 player-idle)
+                                                      (20 1.08 player-walking)
+                                                      (20 0.6 player-walking)))
+    (cond ((= (animation player) animation)
+           (let ((in-frame-clock (/ (mod (- clock (start-clock player)) duration) duration)))
+             (setf (frame-index player) (- frames (floor (* in-frame-clock frames)) 1))))
+          (T
+           (setf (animation player) animation)
+           (setf (frame-index player) 0)
+           (setf (frame-count player) frames)
+           (setf (texture player) (asset 'sprites sprite))
+           (setf (start-clock player) clock)))))
 
 (define-action movement ())
 
@@ -79,6 +105,13 @@
               (setf (velocity player) (- vel))
               (setf (direction player) :right))
              (T (setf (velocity player) 0)))
+       (cond ((or (retained 'movement :left)
+                  (retained 'movement :right))
+              (if (retained 'movement :run)
+                  (inc-anim player 2 (clock *loop*))
+                  (inc-anim player 1 (clock *loop*))))
+             (T
+              (inc-anim player 0 (clock *loop*))))
        (incf (angle player) (velocity player))))))
 
 (defmethod paint :after ((player player) target)
@@ -88,7 +121,7 @@
        (when (and (typep entity 'world-character)
                   (<= (abs (- (angle entity) (angle player))) 1)
                   (dialogue entity))
-         (translate-by -20 40 -1)
+         (translate-by -20 60 -1)
          (paint (text player) target))))))
 
 (define-handler (player perform) (ev)
